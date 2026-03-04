@@ -101,7 +101,10 @@
           <div class="event-card__main">
             <h3 class="event-card__title">
               {{ event.title }} @if (event.status === 'live') {
-              <span class="event-card__live-badge">
+              <span
+                class="event-card__live-badge"
+                data-tooltip="This event is live right now."
+              >
                 <span class="event-card__live-dot"></span>
                 Live
               </span>
@@ -110,17 +113,26 @@
             <div class="event-card__meta">
               <span>{{ event.league }}</span>
               <span>{{ event.sport }}</span>
-              <span [ngClass]="getStatusClass(event.status)">
+              <span
+                [ngClass]="getStatusClass(event.status)"
+                [attr.data-tooltip]="'Event status: ' + (event.status | titlecase)"
+              >
                 {{ event.status | titlecase }}
               </span>
             </div>
-            <p class="event-card__start">
+            <p
+              class="event-card__start"
+              data-tooltip="Local start time for this event."
+            >
               Starts: {{ formatStartTime(event.startTime) }}
             </p>
           </div>
 
           @if (event.liveStats) {
-          <div class="event-card__aside">
+          <div
+            class="event-card__aside"
+            data-tooltip="Live viewer and stream quality statistics for this event."
+          >
             <div class="event-card__stats-title">Live stats</div>
             <div class="event-card__stats-row">
               <span class="event-card__stats-label">Viewers</span>
@@ -135,10 +147,14 @@
               </span>
             </div>
             <p
-              class="event-card__stats-value"
+              class="event-card__stats-value stream-health"
               [ngClass]="getStreamHealthClass(event.liveStats.streamHealth)"
+              [attr.data-tooltip]="'Overall stream quality: ' + (event.liveStats.streamHealth | titlecase)"
             >
-              Stream health: {{ event.liveStats.streamHealth | titlecase }}
+              <span class="stream-health__icon" aria-hidden="true"></span>
+              <span class="stream-health__label">
+                Stream health: {{ event.liveStats.streamHealth | titlecase }}
+              </span>
             </p>
           </div>
           }

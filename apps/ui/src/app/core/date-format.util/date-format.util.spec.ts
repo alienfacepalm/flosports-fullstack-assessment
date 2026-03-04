@@ -15,7 +15,7 @@ describe('formatEventStartTime', () => {
     });
   });
 
-  it('uses weekday, full date, and timezone on wide screens', () => {
+  it('uses full weekday, full date, and timezone on extra-wide screens', () => {
     if (typeof window === 'undefined') return;
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
@@ -25,14 +25,14 @@ describe('formatEventStartTime', () => {
     const iso = '2026-02-21T12:15:00.000Z';
     const result = formatEventStartTime(iso);
 
-    // Expect leading weekday in parens, then short month, day, year, time, and a short timezone token
-    // e.g. "(Sat) Feb 21, 2026, 4:15 AM PST".
-    expect(result).toMatch(/^\([A-Z][a-z]{2}\)\s/);
+    // Expect full weekday, then short month, day, year, time, and a short timezone token
+    // e.g. "Saturday, Feb 21, 2026, 4:15 AM PST".
+    expect(result).toMatch(/^[A-Z][a-z]+,\s/);
     expect(result).toContain('2026');
     expect(result).toMatch(/\b[A-Z]{2,5}\b/);
   });
 
-  it('keeps full date and time with timezone on desktop screens', () => {
+  it('uses short weekday, full date, and timezone on desktop screens', () => {
     if (typeof window === 'undefined') return;
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
@@ -42,6 +42,8 @@ describe('formatEventStartTime', () => {
     const iso = '2026-02-21T12:15:00.000Z';
     const result = formatEventStartTime(iso);
 
+    // e.g. "Sat, Feb 21, 2026, 4:15 AM PST"
+    expect(result).toMatch(/^[A-Z][a-z]{2},\s/);
     expect(result).toContain('2026');
     expect(result).toMatch(/\b[A-Z]{2,5}\b/);
   });

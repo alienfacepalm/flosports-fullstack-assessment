@@ -12,8 +12,10 @@ alwaysApply: true
   - Small phones: `width < 480px`
 
 - **Event card timestamp formatting**:
-  - Extra-wide & desktop (>= 768px): show **weekday + full date + time + timezone** in this pattern:
-    - `Starts: (Wed) Feb 21, 2026, 4:15 AM PST`
+  - Extra-wide (>= 1280px): show **full weekday + full date + time + timezone**:
+    - `Starts: Wednesday, Feb 21, 2026, 4:15 AM PST`
+  - Desktop (>= 768px and < 1280px): show **short weekday + full date + time + timezone**:
+    - `Starts: Wed, Feb 21, 2026, 4:15 AM PST`
   - Tablet-ish (>= 480px and < 768px): show **full date + time** (no explicit timezone):
     - `Starts: Feb 21, 2026, 4:15 AM`
   - Small phones (< 480px): show **short date + time** (no year, no explicit timezone):
