@@ -1,0 +1,44 @@
+---
+description: Core standards and constraints for the flosports NestJS + Angular fullstack assessment
+alwaysApply: true
+---
+
+# FloSports Fullstack Assessment – Core Rules
+
+## Stack and Architecture
+
+- Use **NestJS (TypeScript)** for the backend API, organized into clear modules (e.g., `auth`, `games`, `teams`).
+- Use **Angular (latest stable) with standalone components** for the frontend, with a `frontend/` app using feature modules and smart/dumb component patterns where appropriate.
+- Prefer **strong typing throughout** (no `any` unless absolutely necessary and justified).
+
+## Repository Structure (assumed)
+
+- `backend/`: NestJS app (modules, controllers, services, DTOs, entities).
+- `frontend/`: Angular app (components, services, feature modules).
+- Keep shared contracts (DTO types, enums) in a clearly named shared location if needed (e.g., `shared/` or `backend/src/shared/contracts`).
+
+## Constraints from the Assessment
+
+- **No third-party UI component libraries** (no Angular Material, PrimeNG, ng-bootstrap, etc.).
+  - Implement UI elements (buttons, tables, filters, forms) using HTML/CSS and Angular directives.
+- **Timebox** to roughly **2 hours of focused implementation**; favor a clean, minimal solution over broad but shallow coverage.
+- You **may and should use AI tools**, but all code must be understandable and explainable; avoid copy-pasting large, opaque blocks.
+
+## Code Quality and Testing
+
+- Aim for **small, focused functions** and **thin controllers**; put business logic into NestJS services.
+- Validate and type **request/response DTOs** explicitly; avoid leaking database models over the wire.
+- For Angular, keep components presentational where possible and move data-fetching into services.
+- Prefer **async/await** style, clear error handling, and meaningful HTTP status codes in the API.
+
+## Commit and PR Expectations
+
+- Keep commits logically grouped and messages descriptive (e.g., `feat(api): add games listing endpoint`).
+- The public GitHub repo should be **buildable and runnable** with clear instructions in `README.md`.
+
+## How the Agent Should Behave
+
+- Default to **NestJS + Angular idioms** rather than generic Node/React patterns.
+- When in doubt, prioritize **clarity, correctness, and explainability** over micro-optimizations.
+- Respect the “no UI component library” rule when proposing or generating frontend code.
+

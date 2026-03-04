@@ -1,0 +1,20 @@
+{
+  "name": "ui-filter-bar",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/events/ui-filter-bar/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:ui", "type:ui"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../../coverage/ui/events"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

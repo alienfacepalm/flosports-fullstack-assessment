@@ -1,0 +1,141 @@
+<section
+  class="filter-bar"
+  aria-label="Event filters"
+  role="search"
+>
+  <div class="filter-bar__group filter-bar__group--live">
+    <button
+      type="button"
+      class="live-toggle"
+      [class.live-toggle--active]="filters.liveOnly"
+      role="switch"
+      [attr.aria-checked]="filters.liveOnly"
+      (click)="onToggleClick()"
+      (keydown)="onToggleKeydown($event)"
+    >
+      <span class="live-toggle__track">
+        <span class="live-toggle__thumb"></span>
+      </span>
+      <span class="live-toggle__label">Live</span>
+    </button>
+  </div>
+
+  <div class="filter-bar__group">
+    <label class="filter-bar__label">
+      <span>Search</span>
+    </label>
+    <div class="filter-bar__search-wrap">
+      <svg class="filter-bar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input
+        type="search"
+        class="filter-bar__input"
+        placeholder="Search text"
+        [value]="filters.search"
+        (input)="onSearchChange($event.target.value)"
+        (keydown)="onSearchKeydown($event)"
+        aria-label="Search events by title"
+      />
+      @if (filters.search) {
+        <button
+          type="button"
+          class="filter-bar__clear"
+          aria-label="Clear search"
+          (click)="onClearSearch()"
+        >
+          ×
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="filter-bar__group filter-bar__dropdown-wrap">
+    <span class="filter-bar__label">Sport</span>
+    <div class="filter-bar__dropdown-inner">
+      <button
+        type="button"
+        #dropdownTrigger
+        class="filter-bar__trigger"
+        (click)="toggleDropdown()"
+        (keydown)="onDropdownButtonKeydown($event)"
+        aria-haspopup="listbox"
+        [attr.aria-expanded]="isDropdownOpen"
+        [attr.aria-controls]="isDropdownOpen ? 'sport-listbox' : null"
+        [attr.aria-activedescendant]="focusedOptionId()"
+      >
+        <span [class.filter-bar__trigger-placeholder]="!filters.sport?.trim()">
+          {{ filters.sport?.trim() ? filters.sport : 'Select an option' }}
+        </span>
+        <span
+          class="filter-bar__caret"
+          [class.filter-bar__caret--open]="isDropdownOpen"
+          aria-hidden="true"
+        ></span>
+      </button>
+
+      @if (isDropdownOpen) {
+        <div
+          id="sport-listbox"
+          role="listbox"
+          class="filter-bar__panel"
+          (keydown)="onDropdownPanelKeydown($event)"
+        >
+          <div class="filter-bar__panel-search">
+            <svg class="filter-bar__panel-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+              type="search"
+              #sportSearchInput
+              class="filter-bar__panel-input"
+              placeholder="Search"
+              [value]="sportSearch"
+              (input)="onSportSearchChange($any($event.target).value)"
+              (keydown)="onSportSearchKeydown($event)"
+              aria-label="Filter sports"
+            />
+          </div>
+          <ul class="filter-bar__panel-list">
+            <li
+              class="filter-bar__option"
+              [class.filter-bar__option--focused]="focusedOptionId() === 'sport-option-all'"
+              [class.filter-bar__option--selected]="filters.sport === null"
+              role="option"
+              id="sport-option-all"
+              (click)="onSportSelected(null)"
+              (keydown)="onOptionKeydown($event, null)"
+            >
+              <span class="filter-bar__option-text">All sports</span>
+              @if (filters.sport === null) {
+                <svg class="filter-bar__option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              }
+            </li>
+            @for (sport of filteredSports(); track sport) {
+              <li
+                class="filter-bar__option"
+                [class.filter-bar__option--focused]="focusedOptionId() === 'sport-option-' + sport"
+                [class.filter-bar__option--selected]="filters.sport === sport"
+                role="option"
+                [id]="'sport-option-' + sport"
+                (click)="onSportSelected(sport)"
+                (keydown)="onOptionKeydown($event, sport)"
+              >
+                <span class="filter-bar__option-text">{{ sport }}</span>
+                @if (filters.sport === sport) {
+                  <svg class="filter-bar__option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>

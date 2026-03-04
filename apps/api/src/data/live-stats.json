@@ -1,0 +1,16 @@
+[
+  {
+    "eventId": "evt-0002",
+    "viewerCount": 12345,
+    "peakViewerCount": 15678,
+    "streamHealth": "excellent",
+    "lastUpdated": "2026-02-18T19:45:12.000Z"
+  },
+  {
+    "eventId": "evt-0003",
+    "viewerCount": 4171,
+    "peakViewerCount": 4955,
+    "streamHealth": "good",
+    "lastUpdated": "2026-02-17T23:07:47.146Z"
+  }
+]

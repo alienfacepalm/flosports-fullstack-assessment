@@ -1,0 +1,325 @@
+// Filter bar – light theme (white image guide). BEM: filter-bar, live-toggle, dropdown.
+@use 'sass:color';
+
+// Tokens (match app _variables.scss for filter bar)
+$fb-bg: #ffffff;
+$fb-border: #d1d5db;
+$fb-placeholder: #9ca3af;
+$fb-focus: #3b82f6;
+$fb-track-off: #e0e0e0;
+$fb-thumb-off: #9e9e9e;
+$fb-track-on: #ef4444;
+$fb-thumb-on: #ffffff;
+$fb-label-on: #ef4444;
+$fb-hover-bg: #ecf2ff;
+$fb-selected-text: #3b82f6;
+$fb-text: #111827;
+$fb-label: #374151;
+$fb-input-padding-y: 8px;
+$fb-input-padding-x: 12px;
+$fb-radius: 6px;
+$fb-transition: 0.18s ease-out;
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: $fb-bg;
+  color: $fb-text;
+  border-radius: $fb-radius;
+  border: 1px solid $fb-border;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+.filter-bar__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-bar__group--live {
+  flex-direction: row;
+  align-items: center;
+}
+
+.filter-bar__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $fb-label;
+}
+
+// —— Live toggle (oval track + thumb) ——
+.live-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: $fb-text;
+
+  &:focus-visible {
+    outline: 2px solid $fb-focus;
+    outline-offset: 2px;
+  }
+}
+
+.live-toggle--active .live-toggle__label {
+  color: $fb-label-on;
+}
+
+.live-toggle__track {
+  display: inline-flex;
+  align-items: center;
+  width: 2.25rem;
+  height: 1.125rem;
+  padding: 2px;
+  border-radius: 9999px;
+  background-color: $fb-track-off;
+  transition: background-color $fb-transition;
+
+  .live-toggle--active & {
+    background-color: $fb-track-on;
+  }
+}
+
+.live-toggle__thumb {
+  display: block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background-color: $fb-thumb-off;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform $fb-transition, background-color $fb-transition;
+
+  .live-toggle--active & {
+    transform: translateX(1.125rem);
+    background-color: $fb-thumb-on;
+  }
+}
+
+.live-toggle__label {
+  transition: color $fb-transition;
+}
+
+// —— Search input (with optional clear and icon area) ——
+.filter-bar__search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 260px;
+}
+
+.filter-bar__input {
+  width: 100%;
+  padding: $fb-input-padding-y $fb-input-padding-x;
+  padding-left: 2.25rem;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: $fb-text;
+  background-color: $fb-bg;
+  border: 1px solid $fb-border;
+  border-radius: $fb-radius;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  // Hide native search clear/cancel so only our custom clear button shows
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  &::placeholder {
+    color: $fb-placeholder;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $fb-focus;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  }
+}
+
+.filter-bar__search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: $fb-placeholder;
+  pointer-events: none;
+}
+
+.filter-bar__clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $fb-placeholder;
+  cursor: pointer;
+  font-size: 1.125rem;
+  line-height: 1;
+
+  &:hover {
+    color: $fb-text;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $fb-focus;
+    outline-offset: 1px;
+  }
+}
+
+// —— Sport dropdown ——
+.filter-bar__dropdown-wrap {
+  min-width: 220px;
+}
+
+.filter-bar__dropdown-inner {
+  position: relative;
+}
+
+.filter-bar__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: $fb-input-padding-y $fb-input-padding-x;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: $fb-text;
+  background-color: $fb-bg;
+  border: 1px solid $fb-border;
+  border-radius: $fb-radius;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: color.adjust($fb-border, $lightness: -8%);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: $fb-focus;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+  }
+}
+
+.filter-bar__trigger-placeholder {
+  color: $fb-placeholder;
+}
+
+.filter-bar__caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid $fb-label;
+  margin-left: 0.5rem;
+  transition: transform 0.15s ease;
+}
+
+.filter-bar__caret--open {
+  transform: rotate(180deg);
+}
+
+.filter-bar__panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  width: 100%;
+  max-height: 15rem;
+  background-color: $fb-bg;
+  border: 1px solid $fb-border;
+  border-radius: $fb-radius;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.filter-bar__panel-search {
+  position: relative;
+  padding: 0.5rem;
+  border-bottom: 1px solid $fb-border;
+}
+
+.filter-bar__panel-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.875rem;
+  height: 0.875rem;
+  color: $fb-placeholder;
+  pointer-events: none;
+}
+
+.filter-bar__panel-input {
+  width: 100%;
+  padding: 6px 10px;
+  padding-left: 2rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: $fb-text;
+  background-color: $fb-bg;
+  border: 1px solid $fb-border;
+  border-radius: 4px;
+
+  &::placeholder {
+    color: $fb-placeholder;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $fb-focus;
+  }
+}
+
+.filter-bar__panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  max-height: 11rem;
+  overflow-y: auto;
+}
+
+.filter-bar__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  color: $fb-text;
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+
+  &:hover,
+  &:focus {
+    background-color: $fb-hover-bg;
+    color: $fb-selected-text;
+  }
+}
+
+.filter-bar__option--focused {
+  background-color: $fb-hover-bg;
+  color: $fb-selected-text;
+}
+
+.filter-bar__option--selected .filter-bar__option-text {
+  color: $fb-selected-text;
+}
+
+.filter-bar__option-check {
+  width: 1rem;
+  height: 1rem;
+  color: $fb-selected-text;
+  flex-shrink: 0;
+}

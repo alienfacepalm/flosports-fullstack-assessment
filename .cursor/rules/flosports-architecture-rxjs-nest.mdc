@@ -1,0 +1,103 @@
+---
+description: FloSports Event Explorer – Angular (RxJS) + NestJS (Promises), rate limiting, reactive flows, SCSS styling, production-ready patterns
+alwaysApply: true
+---
+
+# FloSports Architecture – Angular (RxJS) + NestJS (Promises)
+
+## Purpose
+
+- Angular frontend: **RxJS** for all UI-driven async flows.
+- NestJS backend: **async/await Promises** for REST endpoints.
+- Backend must include **rate limiting** to mitigate abuse and protect upstream resources.
+- SCSS-only styling on the frontend (per PRD).
+- Production-ready patterns for filtering, state, API design, and component structure.
+
+---
+
+## Angular (Frontend)
+
+### Reactive Data Flow
+
+- All HTTP calls must use **RxJS Observables**; no Promises in Angular HTTP flows.
+- UI interactions (search, dropdown, toggle) must be modeled as reactive streams.
+- Filtering must use:
+  - `debounceTime` for search input
+  - `switchMap` for cancellation of stale requests
+  - `distinctUntilChanged` for filter stability
+
+### Signals
+
+- Use Angular **signals** for component state.
+- Use `effect()` to react to filter changes and trigger API calls.
+- Use `toSignal()` when bridging Observables into template-friendly signals.
+
+### Component Architecture
+
+- Filter bar: standalone component with toggle, search input, and searchable dropdown.
+- No third-party UI libraries; all styling **SCSS** (per PRD).
+- Accessibility: keyboard navigation, ARIA roles for dropdown/toggle/search, focus management when dropdown opens/closes.
+
+### UI Performance
+
+- Skeleton loaders or shimmer states using SCSS.
+- Use `trackBy` in `*ngFor` lists.
+- Avoid unnecessary change detection triggers.
+
+---
+
+## NestJS (Backend)
+
+### Async Model
+
+- All REST endpoints must use **async/await Promises**, not Observables.
+- Services must return Promises or synchronous values.
+- RxJS allowed only for WebSockets, streaming endpoints, or event-driven pipelines; for this assignment **do not use RxJS** in the backend.
+
+### Rate Limiting (Required)
+
+- Implement **rate limiting** (brute-force, request flooding, high-frequency polling).
+- Apply globally or per-route; use IP-based throttling; return a clear error when limits are exceeded.
+- Options: `@nestjs/throttler`, custom interceptor with in-memory counters, or distributed limiter (e.g. Redis) for horizontal scaling.
+- Document rate limiting configuration in the README.
+
+### Data & Filtering
+
+- Load `events.json` and `live-stats.json` with `fs/promises`; merge in a dedicated service layer (catalog + live stats for live events).
+- Filtering must be **server-side**; pure and testable. Supported: `sport`, status (live only), `title` search (case-insensitive substring).
+
+### API Design
+
+- Endpoints: `GET /events` (query params for filters), `GET /events/:id`, `GET /sports`.
+- Responses typed with DTOs or interfaces.
+
+---
+
+## Shared (Full Stack)
+
+### Testing
+
+- Add tests for: Angular filter behavior, class mapping utilities; NestJS filtering and data merge logic; HTTP interceptor error mapping; rate limiting (e.g. exceeding thresholds). Prioritize filtering and merging correctness.
+
+### Repo & README
+
+- Single repo (Nx or workspace root); one command to start both servers.
+- README must document: assumptions, API design, data merge strategy, backend filtering logic, rate limiting strategy, trade-offs, what you’d add with more time, how AI tools were used.
+
+---
+
+## SCSS
+
+- All styling via SCSS (component and global styles).
+- Use a shared variables file for colors, spacing, breakpoints.
+- Repeated class sets: use semantic/BEM class names and readonly mapping objects in TypeScript where dynamic classes are needed.
+
+---
+
+## Prohibited
+
+- No Promises in Angular HTTP flows.
+- No RxJS in NestJS REST endpoints.
+- No third-party UI libraries (Angular Material, PrimeNG, etc.).
+- No SCSS.
+- No client-side filtering.
