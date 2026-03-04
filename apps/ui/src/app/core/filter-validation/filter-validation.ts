@@ -2,6 +2,7 @@ import { IUiFilterState } from 'ui-filter-bar';
 import { IEventsFilter } from '../../events.types';
 
 const MAX_SEARCH_LENGTH = 200;
+const MIN_SEARCH_LENGTH = 2;
 
 /**
  * Sanitizes search input: trim, limit length, remove null bytes and control characters.
@@ -11,11 +12,16 @@ function sanitizeSearch(value: string): string {
   if (typeof value !== 'string') {
     return '';
   }
-  return value
+  const cleaned = value
     .replace(/\0/g, '')
     .replace(/[\x00-\x1F\x7F]/g, '')
-    .trim()
-    .slice(0, MAX_SEARCH_LENGTH);
+    .trim();
+
+  if (cleaned.length < MIN_SEARCH_LENGTH) {
+    return '';
+  }
+
+  return cleaned.slice(0, MAX_SEARCH_LENGTH);
 }
 
 /**

@@ -19,6 +19,22 @@ describe('validateAndSanitizeFilter', () => {
     expect(result.search).toBe('abc');
   });
 
+  it('treats very short search terms as empty to avoid spamming the API', () => {
+    const resultOneChar = validateAndSanitizeFilter({
+      liveOnly: false,
+      search: 'a',
+      sport: null,
+    });
+    const resultTwoChars = validateAndSanitizeFilter({
+      liveOnly: false,
+      search: 'ab',
+      sport: null,
+    });
+
+    expect(resultOneChar.search).toBe('');
+    expect(resultTwoChars.search).toBe('ab');
+  });
+
   it('caps search length', () => {
     const long = 'a'.repeat(300);
     const result = validateAndSanitizeFilter({

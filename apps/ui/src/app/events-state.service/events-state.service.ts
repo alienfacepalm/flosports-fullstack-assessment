@@ -24,7 +24,7 @@ import { EventStatus, IEvent, IEventsApiResponse, IEventsFilter } from '../event
 import { mapErrorToUiMessage } from '../core/error-mapping/error-mapping';
 import { validateAndSanitizeFilter } from '../core/filter-validation/filter-validation';
 
-const SEARCH_DEBOUNCE_MS = 200;
+const SEARCH_DEBOUNCE_MS = 400;
 const EVENTS_REQUEST_TIMEOUT_MS = 15_000;
 
 const API_POLL_INTERVAL_MS = 2_000;
