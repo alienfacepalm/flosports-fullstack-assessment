@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "data-access": ["libs/api/events/data-access/src/index.ts"],
-      "ui-filter-bar": ["libs/ui/events/ui-filter-bar/src/index.ts"]
+      "ui-filter-bar": ["libs/ui/events/ui-filter-bar/src/index.ts"],
+      "events-explorer": ["ui/events/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

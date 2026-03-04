@@ -33,7 +33,7 @@
       <input
         type="search"
         class="filter-bar__input"
-        placeholder="Search text"
+        placeholder="Search events"
         [value]="filters.search"
         (input)="onSearchChange($event.target.value)"
         (keydown)="onSearchKeydown($event)"
@@ -81,7 +81,7 @@
         [attr.data-tooltip]="filters.sport?.trim() ? 'Filtering by ' + filters.sport + '. Click to change sport filter.' : 'Choose a sport to filter events.'"
       >
         <span [class.filter-bar__trigger-placeholder]="!filters.sport?.trim()">
-          {{ filters.sport?.trim() ? filters.sport : 'Select an option' }}
+          {{ filters.sport?.trim() ? filters.sport : 'Select a sport' }}
         </span>
         <span
           class="filter-bar__caret"

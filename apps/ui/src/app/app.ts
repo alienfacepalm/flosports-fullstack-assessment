@@ -3,17 +3,20 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { UiFilterBar, IUiFilterState } from 'ui-filter-bar';
+import {
+  BootScreenCardComponent,
+  EventCardComponent,
+  SkeletonCardComponent,
+  formatEventStartTime,
+  getStatusClass,
+  getStreamHealthClass,
+} from 'events-explorer';
 import { EventsStateService } from './events-state.service/events-state.service';
-import { getStatusClass, getStreamHealthClass } from './core/event-class-maps/event-class-maps';
-import { formatEventStartTime } from './core/date-format.util/date-format.util';
 import {
   filterStateToSegments,
   segmentsToFilterState,
   deslugifySport,
 } from './core/filter-url.util/filter-url.util';
-import { EventCardComponent } from './event-card/event-card';
-import { BootScreenCardComponent } from './boot-screen-card/boot-screen-card';
-import { SkeletonCardComponent } from './skeleton-card/skeleton-card';
 
 @Component({
   standalone: true,

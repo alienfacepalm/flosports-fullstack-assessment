@@ -208,7 +208,7 @@ $fb-control-height: 2.5rem;
   border-radius: 9999px;
   border: 2px solid $fb-border; // slightly stronger stroke than inputs
   background-color: transparent; // let the card background show through
-  color: $fb-text; // match primary control text color (e.g., "Select an option")
+  color: $fb-text; // match primary control text color (e.g., "Select a sport")
   cursor: pointer;
   transition:
     color $fb-transition,
@@ -296,10 +296,13 @@ $fb-control-height: 2.5rem;
   left: 0;
   top: calc(100% + 4px);
   width: 100%;
-  max-height: 15rem;
-  // Use a more opaque dark background so list items are easy to read
-  background-color: rgba(12, 12, 12, 0.96);
-  border: 1px solid rgba(156, 163, 175, 0.75);
+  max-height: 18rem;
+  // Make the dropdown close to opaque so background UI (including white text) doesn't compete with the menu content.
+  // We keep a little translucency for depth, but prioritize legibility.
+  background-color: color.change($fb-bg, $alpha: 0.32);
+  border-width: 1px;
+  border-style: solid;
+  border-color: $fb-border;
   border-radius: $fb-radius;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -348,7 +351,7 @@ $fb-control-height: 2.5rem;
   list-style: none;
   margin: 0;
   padding: 0.25rem 0;
-  max-height: 11rem;
+  max-height: 14rem;
   overflow-y: auto;
 }
 
