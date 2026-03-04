@@ -8,13 +8,19 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/dist/apps/api"],
       "options": {
-        "command": "webpack-cli build",
-        "args": ["--node-env=production"],
-        "cwd": "apps/api"
+        "cwd": "apps/api",
+        "parallel": false,
+        "commands": [
+          "webpack-cli build --node-env=production",
+          "node ../../.scripts/strip-dist-pnpm-overrides.mjs"
+        ]
       },
       "configurations": {
         "development": {
-          "args": ["--node-env=development"]
+          "commands": [
+            "webpack-cli build --node-env=development",
+            "node ../../.scripts/strip-dist-pnpm-overrides.mjs"
+          ]
         }
       }
     },

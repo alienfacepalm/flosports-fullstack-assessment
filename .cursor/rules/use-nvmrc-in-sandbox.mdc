@@ -1,0 +1,18 @@
+---
+description: In Cursor sandbox, always activate the Node version from .nvmrc before running any Node/pnpm/nx command
+alwaysApply: true
+---
+
+# Use .nvmrc Node Version in Sandbox
+
+- **Every terminal command** that runs Node, pnpm, npm, npx, nx, or any project script **must** ensure the Node version from `.nvmrc` is active first.
+- In the **Cursor sandbox** (and any terminal in this workspace), prefix such commands with the appropriate version switch:
+  - **Windows (PowerShell / cmd):**  
+    `nvm use` (nvm-windows) or `fnm use` (fnm), then your command.  
+    Example: `nvm use && pnpm install`
+  - **Linux / macOS (bash/zsh):**  
+    `source ~/.nvm/nvm.sh 2>/dev/null && nvm use;` or `fnm use`, then your command.  
+    Example: `source ~/.nvm/nvm.sh 2>/dev/null && nvm use && pnpm install`
+- This applies to: `pnpm`, `npm`, `npx`, `nx`, `node`, build/test/serve scripts, and any command that invokes Node.
+- Do **not** assume the sandbox already has the correct Node version; always run the version-manager step (or chain it) before the actual command.
+- Current `.nvmrc` in this project: **24** (pinned to Node 24 major; LTS 24.14.0 as of Feb 2026, matches package.json engines `>=22.0.0`).
