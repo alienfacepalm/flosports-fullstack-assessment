@@ -1,10 +1,10 @@
-# FloSports Event Explorer – Documentation (Presentation)
+# FloSports Event Explorer – Documentation (Presentation) 📘
 
 This document answers the PRD’s required documentation topics for the FloSports Event Explorer take-home. It is intended for reviewers and for presentation.
 
 ---
 
-## 1. Assumptions made
+## 1. Assumptions made 🤔
 
 - **Data location**: The two JSON data sources live at `apps/api/src/data/events.json` and `apps/api/src/data/live-stats.json`. Paths are resolved from `process.cwd()` at runtime, so the API must be run from the monorepo root.
 - **Merge semantics**: Live stats are attached only when the event’s `status` is `live`. For non-live events, `liveStats` is left `undefined` even if `live-stats.json` contains a row for that event.
@@ -18,7 +18,7 @@ This document answers the PRD’s required documentation topics for the FloSport
 
 ---
 
-## 2. API design
+## 2. API design 🌐
 
 ### Base URL and prefix
 
@@ -64,7 +64,7 @@ All query parameters are optional. Validation is done with `class-validator`; in
 
 ---
 
-## 3. Data loading & merging
+## 3. Data loading & merging 🔄
 
 ### Where data lives
 
@@ -90,7 +90,7 @@ All query parameters are optional. Validation is done with `class-validator`; in
 
 ---
 
-## 4. Backend decisions
+## 4. Backend decisions 🧩
 
 ### NestJS layout
 
@@ -116,7 +116,7 @@ So: **thin controller** (parses query, calls service), **service** that delegate
 
 ---
 
-## 5. Trade-offs & future work
+## 5. Trade-offs & future work ⚖️
 
 ### Prioritized
 
@@ -147,10 +147,11 @@ So: **thin controller** (parses query, calls service), **service** that delegate
 - Expose `status` in the UI filter bar and pass it through to the API.
 - **Deep linking**: Implemented — filter state is reflected in URL query params so links are shareable; back/forward syncs filters.
 - Stricter error handling and logging (e.g. structured logs, distinct 404/500 where appropriate).
+- **Local caching & optimistic UI**: Add a client-side caching layer (e.g. IndexedDB/localStorage plus an in-memory signal store) so event lists can be served from local cache first, with optimistic updates for user actions and a background revalidation step that syncs with the API. This could be extended into a PWA with a service worker for offline caching and background sync.
 
 ---
 
-## 6. AI tools usage
+## 6. AI tools usage 🤖
 
 - **Use of AI**: This documentation and parts of the codebase were written or refined with the help of an AI assistant (Cursor).
 - **How it was used**: Exploring the repo structure, reading controllers/services/repository and filter logic, and drafting this README so it matches the code and the PRD’s six documentation requirements. The PRD documentation rule in `.cursor/rules/prd-documentation.mdc` was used to ensure all six sections are covered.

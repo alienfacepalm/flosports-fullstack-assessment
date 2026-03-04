@@ -1,12 +1,15 @@
-## flosports-fullstack-assessment
+## flosports-fullstack-assessment ⚽📊
 
-FloSports Event Explorer – **Nx** monorepo with **pnpm**. Backend: NestJS (API). Frontend: Angular (UI) with SCSS styling.
+FloSports Event Explorer – **Nx** monorepo with **pnpm**.
 
-### Documentation
+- **Backend**: NestJS API exposing `/api/events`, `/api/events/:id`, and `/api/sports`, with server-side filtering and global IP-based rate limiting. 🔐
+- **Frontend**: Angular UI (SCSS-only styling) that renders a single-page Event Explorer with a filter bar (live-only toggle, sport dropdown, search) and deep-linkable filter state. 🎛️
 
-- **Detailed docs**: `doc/README.md` – assumptions, API design, data loading & merge, backend decisions, rate limiting, trade-offs, and AI tool usage.
+### Documentation 📝
 
-### Getting pnpm
+- **Detailed docs & PRD write-up**: [doc/README.md](doc/README.md) – assumptions, API design, data loading & merge, backend decisions, rate limiting, trade-offs, tests, and AI tool usage.
+
+### Getting pnpm 📦
 
 This repo uses **pnpm** only. If you don’t have it, use **one** of these options:
 
@@ -38,4 +41,4 @@ Starts the **API** (port 3000) and **UI** (port 4200) in parallel. The UI proxie
 - **UI unit**: `pnpm exec nx run ui:test`
 - **API e2e**: Start the API (`pnpm start:api`), then in another terminal: `pnpm exec nx run api-e2e:e2e`
 
-See `doc/README.md` for API design, rate limiting, data merge strategy, and more.
+See [doc/README.md](doc/README.md) for API design, rate limiting, data merge strategy, and more.
