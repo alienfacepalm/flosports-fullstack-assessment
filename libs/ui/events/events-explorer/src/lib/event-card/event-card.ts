@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { IEvent } from '../../../../../apps/ui/src/app/events.types';
+import { IEvent } from '../../../../../../../apps/ui/src/app/events.types';
 import {
   getStatusClass,
   getStreamHealthClass,

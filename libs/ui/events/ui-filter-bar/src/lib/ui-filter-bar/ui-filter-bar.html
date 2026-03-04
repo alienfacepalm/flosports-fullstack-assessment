@@ -10,7 +10,7 @@
       [class.live-toggle--active]="filters.liveOnly"
       role="switch"
       [attr.aria-checked]="filters.liveOnly"
-      [attr.data-tooltip]="filters.liveOnly ? 'Showing only live events. Click to include all events.' : 'Show only events that are live right now.'"
+      [attr.data-tooltip]="filters.liveOnly ? 'Showing only live events' : 'Show only live events'"
       (click)="onToggleClick()"
       (keydown)="onToggleKeydown($event)"
     >
@@ -38,7 +38,7 @@
         (input)="onSearchChange($event.target.value)"
         (keydown)="onSearchKeydown($event)"
         aria-label="Search events by title"
-        data-tooltip="Search events by title."
+        data-tooltip="Search events by title"
       />
       @if (filters.search) {
         <button
@@ -78,7 +78,7 @@
         [attr.aria-expanded]="isDropdownOpen"
         [attr.aria-controls]="isDropdownOpen ? 'sport-listbox' : null"
         [attr.aria-activedescendant]="focusedOptionId()"
-        [attr.data-tooltip]="filters.sport?.trim() ? 'Filtering by ' + filters.sport + '. Click to change sport filter.' : 'Choose a sport to filter events.'"
+        [attr.data-tooltip]="filters.sport?.trim() ? 'Filtering by ' + filters.sport : 'Choose a sport to filter events'"
       >
         <span [class.filter-bar__trigger-placeholder]="!filters.sport?.trim()">
           {{ filters.sport?.trim() ? filters.sport : 'Select a sport' }}
@@ -160,7 +160,7 @@
       type="button"
       class="filter-bar__reset"
       aria-label="Reset all filters"
-      data-tooltip="Reset all filters back to defaults."
+      data-tooltip="Reset all filters"
       (click)="onResetFilters()"
     >
       <svg

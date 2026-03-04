@@ -1,24 +1,25 @@
-// Filter bar – light theme (white image guide). BEM: filter-bar, live-toggle, dropdown.
+// Filter bar – dark FloSports theme. BEM: filter-bar, live-toggle, dropdown.
 @use 'sass:color';
+@use '../../../../../../../apps/ui/src/variables' as *;
 
 // Tokens tuned to match dark FloSports palette (see apps/ui/src/_variables.scss)
-// Slightly darker than event cards so the controls feel distinct.
-$fb-bg: rgba(255, 255, 255, 0.06); // filter-bar background
-$fb-border: rgba(255, 255, 255, 0.18);
-$fb-placeholder: #9ca3af;
-$fb-focus: #ff140f;
-$fb-track-off: rgba(255, 255, 255, 0.2);
-$fb-thumb-off: #9ca3af;
-$fb-track-on: #ff140f;
-$fb-thumb-on: #ffffff;
-$fb-label-on: #ff140f;
-$fb-hover-bg: rgba(255, 20, 15, 0.15);
-$fb-selected-text: #ff140f;
-$fb-text: #f9fafb;
-$fb-label: #d1d5db;
-$fb-input-padding-y: 8px;
-$fb-input-padding-x: 12px;
-$fb-radius: 1rem;
+// Slightly darker than event cards so the controls feel distinct but still on-brand.
+$fb-bg: $filter-input-bg; // filter-bar background
+$fb-border: $filter-input-border;
+$fb-placeholder: $filter-placeholder;
+$fb-focus: $filter-focus-border;
+$fb-track-off: $toggle-track-off;
+$fb-thumb-off: $toggle-thumb-off;
+$fb-track-on: $toggle-track-on;
+$fb-thumb-on: $toggle-thumb-on;
+$fb-label-on: $toggle-label-on;
+$fb-hover-bg: $dropdown-hover-bg;
+$fb-selected-text: $dropdown-selected-text;
+$fb-text: $color-text-primary;
+$fb-label: $color-text-accent;
+$fb-input-padding-y: $input-padding-y;
+$fb-input-padding-x: $input-padding-x;
+$fb-radius: $radius-xl;
 $fb-transition: 0.18s ease-out;
 // Shared control height so toggle, inputs, and reset feel aligned
 $fb-control-height: 2.5rem;
@@ -299,14 +300,15 @@ $fb-control-height: 2.5rem;
   top: calc(100% + 4px);
   width: 100%;
   max-height: 18rem;
-  // Make the dropdown close to opaque so background UI (including white text) doesn't compete with the menu content.
-  // We keep a little translucency for depth, but prioritize legibility.
-  background-color: color.change($fb-bg, $alpha: 0.32);
+  // Glass effect: subtle dark tint with gentle blur so the background (including text) stays legible underneath.
+  background-color: color.change($flo-black, $alpha: 0.18);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border-width: 1px;
   border-style: solid;
-  border-color: $fb-border;
+  border-color: $color-border-strong;
   border-radius: $fb-radius;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  box-shadow: $dropdown-panel-shadow;
   overflow: hidden;
   z-index: 10;
 }
@@ -362,7 +364,7 @@ $fb-control-height: 2.5rem;
   align-items: center;
   justify-content: space-between;
   padding: 6px 12px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: $fb-text;
   cursor: pointer;
   transition: background-color 0.1s ease, color 0.1s ease;

@@ -1,0 +1,38 @@
+---
+description: Popup, dialog, toast, and banner messaging should not end with a trailing period when they are short labels or status messages.
+alwaysApply: true
+---
+
+# Popup & Dialog Messaging – No Trailing Periods
+
+- **Scope**: Applies to short UI messaging in:
+  - Popups and modal dialogs (titles and primary message lines)
+  - Toast notifications and snackbars
+  - Inline banners and status strips (success, error, warning, info)
+  - Confirmation prompts and non-form error messages
+
+- **Rule**: For short, label-style or single-line messages, **do not add a trailing period**.
+  - Treat these like button labels or headings, not full prose.
+  - This keeps the UI consistent with tooltip and inline messaging rules.
+
+## Examples
+
+- **Good**
+  - `Changes saved successfully`
+  - `Unable to load events`
+  - `Are you sure you want to leave this page`
+  - `Session expired, please sign in again`
+
+- **Bad**
+  - `Changes saved successfully.`
+  - `Unable to load events.`
+  - `Are you sure you want to leave this page?` (question mark is ok; avoid adding an extra period)
+  - `Session expired, please sign in again.`
+
+## Longer Explanatory Text
+
+- For longer, paragraph-style copy inside a popup (e.g., two or more sentences of description), it's acceptable to use normal punctuation, including periods.
+- In those cases, keep:
+  - A **short, period-less title** (e.g., `Delete event`).
+  - Body text as standard prose (e.g., `This action cannot be undone. All related data will be removed.`).
+

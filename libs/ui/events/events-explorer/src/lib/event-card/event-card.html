@@ -3,7 +3,7 @@
     <h2 class="event-card__title">
       {{ event.title }}
       @if (event.status === 'live') {
-        <span class="event-card__live-badge" data-tooltip="This event is live right now.">
+        <span class="event-card__live-badge" data-tooltip="This event is live right now">
           <span class="event-card__live-dot"></span>
           LIVE
         </span>
@@ -11,7 +11,7 @@
     </h2>
 
     <div class="event-card__meta">
-      <span>{{ event.organization }}</span>
+      <span>{{ event.league }}</span>
       <span>{{ event.sport }}</span>
       @if (event.status) {
         <span [class]="getStatusClass(event.status)">{{ event.status | titlecase }}</span>
@@ -19,7 +19,7 @@
     </div>
 
     <p class="event-card__start">
-      Starts: {{ formatStartTime(event.startTimeUtc) }}
+      Starts: {{ formatStartTime(event.startTime) }}
     </p>
   </div>
 
@@ -29,13 +29,13 @@
       <div class="event-card__stats-row">
         <span class="event-card__stats-label">Viewers</span>
         <span class="event-card__stats-value">
-          {{ event.liveStats.currentViewers | number }}
+          {{ event.liveStats.viewerCount | number }}
         </span>
       </div>
       <div class="event-card__stats-row">
         <span class="event-card__stats-label">Peak viewers</span>
         <span class="event-card__stats-value">
-          {{ event.liveStats.peakViewers | number }}
+          {{ event.liveStats.peakViewerCount | number }}
         </span>
       </div>
       <div class="event-card__stats-row">
@@ -44,7 +44,7 @@
           <span
             class="stream-health"
             [class]="getStreamHealthClass(event.liveStats.streamHealth)"
-            data-tooltip="Stream health is based on bitrate, dropped frames, and error rates."
+            data-tooltip="Stream health is based on bitrate, dropped frames, and error rates"
           >
             <span class="stream-health__icon"></span>
             <span class="stream-health__label">
