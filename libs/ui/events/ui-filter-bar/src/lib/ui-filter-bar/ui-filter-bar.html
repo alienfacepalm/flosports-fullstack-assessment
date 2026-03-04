@@ -21,52 +21,6 @@
     </button>
   </div>
 
-  <div class="filter-bar__group filter-bar__group--status">
-    <span class="filter-bar__label">Status</span>
-    <div class="status-toggle" role="radiogroup" aria-label="Filter by event status">
-      <button
-        type="button"
-        class="status-toggle__button"
-        [class.status-toggle__button--active]="filters.status === 'all'"
-        (click)="onStatusChange('all')"
-        [attr.aria-pressed]="filters.status === 'all'"
-        data-tooltip="Show events in any status"
-      >
-        All
-      </button>
-      <button
-        type="button"
-        class="status-toggle__button status-toggle__button--upcoming"
-        [class.status-toggle__button--active]="filters.status === 'upcoming'"
-        (click)="onStatusChange('upcoming')"
-        [attr.aria-pressed]="filters.status === 'upcoming'"
-        data-tooltip="Show upcoming events"
-      >
-        Upcoming
-      </button>
-      <button
-        type="button"
-        class="status-toggle__button status-toggle__button--live"
-        [class.status-toggle__button--active]="filters.status === 'live'"
-        (click)="onStatusChange('live')"
-        [attr.aria-pressed]="filters.status === 'live'"
-        data-tooltip="Show live events"
-      >
-        Live
-      </button>
-      <button
-        type="button"
-        class="status-toggle__button status-toggle__button--completed"
-        [class.status-toggle__button--active]="filters.status === 'completed'"
-        (click)="onStatusChange('completed')"
-        [attr.aria-pressed]="filters.status === 'completed'"
-        data-tooltip="Show completed events"
-      >
-        Completed
-      </button>
-    </div>
-  </div>
-
   <div class="filter-bar__group">
     <label class="filter-bar__label">
       <span>Search</span>

@@ -151,7 +151,7 @@ describe('UiFilterBar', () => {
       });
       testApi.onToggleKeydown({
         key: 'Enter',
-        preventDefault: () => {},
+        preventDefault: () => undefined,
       } as KeyboardEvent);
     });
 
@@ -161,7 +161,7 @@ describe('UiFilterBar', () => {
       });
       testApi.onToggleKeydown({
         key: ' ',
-        preventDefault: () => {},
+        preventDefault: () => undefined,
       } as KeyboardEvent);
     });
 
@@ -173,7 +173,7 @@ describe('UiFilterBar', () => {
       });
       const ev = {
         key: 'Enter',
-        preventDefault: () => {},
+        preventDefault: () => undefined,
       } as KeyboardEvent;
       testApi.onOptionKeydown(ev, 'Cycling');
     });

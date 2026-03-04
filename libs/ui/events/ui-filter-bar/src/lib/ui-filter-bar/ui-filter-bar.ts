@@ -67,8 +67,9 @@ export class UiFilterBar {
     this.emitUpdatedFilters({ ...DEFAULT_UI_FILTER_STATE });
   }
 
-  protected onSearchKeydown(_event: KeyboardEvent): void {
+  protected onSearchKeydown(event: KeyboardEvent): void {
     // Allow default (typing); Escape could clear if desired
+    void event;
   }
 
   protected onSportSearchChange(value: string): void {
