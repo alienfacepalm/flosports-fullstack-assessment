@@ -1,0 +1,23 @@
+---
+description: Enforce I- and T- prefixes for interfaces and type aliases
+globs: **/*.ts
+alwaysApply: false
+---
+
+# TypeScript Interface and Type Prefixes
+
+- **Interfaces must use an `I` prefix**:
+  - ✅ `interface IEvent`, `interface IEventsFilter`
+  - ❌ `interface Event`, `interface EventsFilter`
+- **Type aliases must use a `T` prefix**:
+  - ✅ `type TEventId = string`
+  - ❌ `type EventId = string`
+- **Enums, classes, and other symbols are not prefixed**:
+  - Enums: `enum EventStatus { ... }`
+  - Classes: `class EventsService { ... }`
+
+## When adding or refactoring types
+
+- Prefer **interfaces** for object shapes that are extended or implemented, and **type aliases** (`T...`) for unions, mapped types, and other advanced constructs.
+- When renaming existing interfaces/types, update all imports and usages to follow the `I` / `T` prefix convention.
+

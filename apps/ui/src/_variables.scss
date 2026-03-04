@@ -1,0 +1,87 @@
+// FloSports Event Explorer – design tokens (SCSS variables)
+// Use these in component SCSS for consistency.
+// Theme aligned with flosports.tv: red #FF140F, black #0C0C0C.
+
+// FloSports brand palette
+$flo-red: #ff140f;
+$flo-red-soft: rgba(255, 20, 15, 0.35);
+$flo-red-muted: rgba(255, 20, 15, 0.2);
+$flo-black: #0c0c0c;
+$flo-black-soft: rgba(12, 12, 12, 0.5);
+$flo-black-muted: rgba(12, 12, 12, 0.25);
+
+$color-bg-base: #0c0c0c;
+$color-bg-elevated: rgba(255, 255, 255, 0.06);
+$color-bg-card: rgba(255, 255, 255, 0.08);
+$color-bg-card-alt: rgba(255, 255, 255, 0.04);
+$color-bg-gradient-from: #0c0c0c;
+$color-bg-gradient-via: #0c0c0c;
+$color-bg-gradient-to: #0c0c0c;
+
+$color-text-primary: #f9fafb;
+$color-text-muted: #9ca3af;
+$color-text-accent: #d1d5db;
+
+$color-border: rgba(255, 255, 255, 0.12);
+$color-border-strong: rgba(255, 255, 255, 0.18);
+
+// Filter bar / form controls (dark theme, FloSports)
+$filter-input-bg: rgba(255, 255, 255, 0.08);
+$filter-input-border: rgba(255, 255, 255, 0.18);
+$filter-placeholder: #6b7280;
+$filter-focus-border: $flo-red;
+$filter-focus-outline: $flo-red;
+$toggle-track-off: rgba(255, 255, 255, 0.2);
+$toggle-thumb-off: #6b7280;
+$toggle-track-on: $flo-red;
+$toggle-thumb-on: #ffffff;
+$toggle-label-on: $flo-red;
+$dropdown-hover-bg: rgba(255, 20, 15, 0.15);
+$dropdown-selected-text: $flo-red;
+$dropdown-panel-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$input-padding-y: 8px;
+$input-padding-x: 12px;
+$input-radius: 6px;
+
+$color-status-upcoming-bg: #dbeafe;
+$color-status-upcoming-text: #1e40af;
+$color-status-live-bg: #fce7f3;
+$color-status-live-text: #be185d;
+$color-status-live-badge-bg: #dc2626;
+$color-status-live-badge-text: #ffffff;
+$color-status-live-dot: #ef4444;
+$color-status-completed-bg: #f3f4f6;
+$color-status-completed-text: #374151;
+
+$color-stream-excellent: #34d399;
+$color-stream-good: #6ee7b7;
+$color-stream-fair: #fde047;
+$color-stream-poor: #fb923c;
+
+$color-error-bg: rgba(127, 29, 29, 0.8);
+$color-error-text: #fecaca;
+
+$color-empty-border: rgba(255, 255, 255, 0.2);
+
+// Spacing
+$spacing-1: 0.25rem;
+$spacing-2: 0.5rem;
+$spacing-3: 0.75rem;
+$spacing-4: 1rem;
+$spacing-5: 1.25rem;
+$spacing-6: 1.5rem;
+$spacing-10: 2.5rem;
+
+// Typography
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-badge: 0.7rem;
+
+// Layout
+$content-max-width: 64rem;
+$radius-lg: 0.75rem;
+$radius-xl: 1rem;
+
+// Breakpoint (for mixins if needed)
+$breakpoint-md: 768px;

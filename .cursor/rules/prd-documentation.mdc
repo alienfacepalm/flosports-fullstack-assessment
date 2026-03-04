@@ -1,0 +1,32 @@
+---
+description: PRD documentation expectations – keep README and doc/ complete and up to date
+globs: README.md, doc/**/*.md
+alwaysApply: false
+---
+
+# PRD Documentation – FloSports Event Explorer
+
+When adding or editing documentation (README, `doc/`), ensure it satisfies the **employer’s PRD documentation expectations** and stays aligned with the codebase.
+
+## Key PRD constraint: no third-party UI libraries
+
+Do not use any third-party UI component libraries (e.g., Angular Material, PrimeNG, ng-bootstrap, etc.). All components — including the toggle, search input, and dropdown — should be built from scratch. We want to see how you approach component architecture, accessibility, and styling on your own.
+
+## Required documentation sections
+
+Documentation (README and/or supporting docs in `doc/`) must cover:
+
+1. **Assumptions** – What wasn’t in the PRD that you decided (e.g. defaults, edge cases, UX).
+2. **API design** – Endpoints, request/response shape, and why they’re structured that way.
+3. **Data loading & merging** – How `events.json` and `live-stats.json` are loaded, where merge happens, and what would change if they were real HTTP services.
+4. **Backend decisions** – NestJS module/service layout and how server-side filtering works (sport, status, title search).
+5. **Trade-offs & future work** – What was prioritized vs skipped; what you’d add with more time.
+6. **AI tools usage** – Whether AI was used, for what, and what had to be corrected.
+
+## Keeping docs up to date
+
+- When you **change API** (new/removed endpoints, DTOs, query params), update the API design section.
+- When you **change data loading or merge logic**, update the data loading & merging section.
+- When you **restructure backend** (modules, services, filtering), update the backend decisions section.
+- When you **change scope or priorities**, update assumptions and/or trade-offs & future work.
+- Reference the full checklist in `doc/PRD.md`; use it to audit docs before considering documentation “done”.

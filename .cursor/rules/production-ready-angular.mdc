@@ -1,0 +1,91 @@
+---
+description: Production-ready Angular refactor instructions (SCSS only, no UI libs)
+globs: apps/ui/**/*
+alwaysApply: false
+---
+
+# Project Refactor Instructions — Production-Ready Angular (SCSS)
+
+Improve the Angular app to be production-ready. Use **SCSS** for all styling (per PRD). Do not introduce third-party UI component libraries.
+
+---
+
+## 1. Architecture & State Management
+
+- Move imperative data loading out of the root component.
+- Use Angular signals for:
+  - filter state,
+  - events,
+  - sports,
+  - loading/error states.
+- Replace manual `loadEvents()` with a reactive `effect()` that runs when filters change.
+- Make API calls cancellable via `switchMap` or `takeUntilDestroyed()`.
+
+---
+
+## 2. API Interaction & Error Handling
+
+- Add a dedicated error-mapping utility so the UI gets clean, typed error messages.
+- Add an HTTP interceptor for: global error handling, optional retry, request logging.
+- Type all API responses with DTOs/interfaces.
+- Validate filter parameters before sending to the backend.
+
+---
+
+## 3. Performance & UX
+
+- Debounce the search filter (150–300ms) so rapid typing does not spam the backend.
+- Use a richer loading state (e.g. skeleton rows) with SCSS.
+- Keep the event list efficient for large datasets (e.g. `trackBy`).
+
+---
+
+## 4. Accessibility & Component Quality
+
+- Add ARIA roles and keyboard navigation to: custom dropdown, toggle, search input.
+- Manage focus when dropdown opens/closes.
+- Extract status/stream-health class names into **readonly** mapping objects; style them in SCSS for clarity and testability.
+
+---
+
+## 5. Testing & Reliability
+
+- Unit tests for: filter state transitions, API service behavior, class-mapping utilities, date formatting.
+- Integration test: filter bar + event list together.
+- Test the HTTP interceptor so error mapping is verified.
+
+---
+
+## 6. Build, CI, and Workspace Hygiene
+
+- Enable strict Angular compiler options:
+  - `strictTemplates: true`
+  - `strictInjectionParameters: true`
+  - `noImplicitOverride: true`
+- Add Nx project boundaries and tags to enforce architecture.
+- Lint rules for import structure and layering.
+- Environment config: API URLs in `environment.ts`; no hardcoded URLs in components.
+
+---
+
+## 7. Security & Input Handling
+
+- Sanitize search input before sending to the backend.
+- Validate filter values before applying.
+- Never inject untrusted HTML into templates.
+
+---
+
+## 8. SCSS Organization
+
+- Use a shared `_variables.scss` (or global tokens) for colors, spacing, and breakpoints.
+- Use BEM-style class names; keep component SCSS focused and avoid deep nesting.
+- Use SCSS variables and mixins for responsive behavior where needed.
+
+---
+
+## Goals
+
+- Clean, typed, reactive, maintainable code.
+- SCSS as the styling system (per PRD).
+- Correctness, accessibility, and resilience without over-engineering.

@@ -1,0 +1,23 @@
+{
+  "servers": {
+    "nx-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["nx-mcp@latest"]
+    },
+    "nx-console": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["nx-mcp@latest"]
+    },
+    "nest-openapi": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/openapi@latest",
+        "--url",
+        "http://localhost:3000/api-json"
+      ]
+    }
+  }
+}

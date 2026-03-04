@@ -1,0 +1,50 @@
+---
+description: Enforces kebab-case filenames and disallows use of any in TypeScript
+globs: **/*.ts
+alwaysApply: false
+---
+
+# Naming and TypeScript Strictness
+
+## Filenames – Always Kebab-Case
+
+- All source files in this project should use **kebab-case** filenames:
+  - ✅ `game-list.component.ts`
+  - ✅ `team-details.service.ts`
+  - ✅ `app-routing.module.ts`
+  - ❌ `GameList.ts`, `gameList.ts`, `game_list.ts`
+- Apply kebab-case consistently across backend (`backend/`) and frontend (`frontend/`) code, including:
+  - Components, services, modules, controllers, DTOs, and utilities.
+
+> When proposing or creating new files, always choose kebab-case names.
+
+## TypeScript – Never Use any
+
+- Do **not** use the `any` type in TypeScript code:
+  - ❌ `let data: any;`
+  - ❌ `function handle(input: any) { ... }`
+- Prefer more precise alternatives:
+  - Use concrete interfaces, types, or generics.
+  - Use `unknown` when you truly do not know the shape and must narrow it.
+  - Use union types or generics instead of falling back to `any`.
+
+### Examples
+
+```typescript
+// ❌ BAD
+function parseResponse(response: any): any {
+  return response.data;
+}
+
+// ✅ GOOD
+interface ApiResponse<T> {
+  data: T;
+}
+
+function parseResponse<T>(response: ApiResponse<T>): T {
+  return response.data;
+}
+```
+
+The agent should **avoid generating or suggesting `any`** and, when refactoring, should opportunistically replace existing `any` usages with safer, well-typed alternatives.
+

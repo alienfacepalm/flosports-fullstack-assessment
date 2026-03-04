@@ -1,0 +1,72 @@
+---
+description: Organize Angular and NestJS logic into feature modules instead of dumping code into app roots
+alwaysApply: true
+---
+
+# Angular & NestJS Structure – Feature-First, Not app-First
+
+## General Principles
+
+- **Feature-first structure**: Organize both Angular and NestJS code by domain/feature (e.g., `events`, `teams`, `auth`), not by generic layers in a single `app` folder.
+- **No business logic in `app` roots**: The root `app` modules (`AppModule` in Nest, Angular root `AppModule`) should only wire up configuration, routing, and global providers – never contain domain-specific business logic.
+- **Use modules/controllers/services**: For each feature, define clear NestJS modules/controllers/services and Angular feature modules/components/services.
+
+---
+
+## NestJS – Backend Organization
+
+- **Create feature modules** under the Nest app (or as Nx libs when appropriate), e.g.:
+  - `apps/api/src/app/events/` or `libs/api/events/`
+  - `apps/api/src/app/teams/` or `libs/api/teams/`
+- **Each feature directory** should typically contain:
+  - `events.module.ts` – NestJS module
+  - `events.controller.ts` – HTTP/controller layer, thin and delegating to services
+  - `events.service.ts` – business logic for the feature
+  - `dto/` – request/response DTOs (e.g., `create-event.dto.ts`, `update-event.dto.ts`)
+  - `entities/` or `models/` – persistence/domain entities if needed
+- **Keep `AppModule` thin**:
+  - Only imports feature modules and global infrastructure modules (e.g., `ConfigModule`, `TypeOrmModule`, caching, logging).
+  - Do **not** register feature controllers/services directly in `AppModule`.
+- **Business logic in services**:
+  - Controllers handle validation, routing, and HTTP concerns.
+  - Services encapsulate business rules and orchestrate repositories/other services.
+
+---
+
+## Angular – Frontend Organization
+
+- **Use feature modules and/or Nx libs**:
+  - Organize Angular features under `apps/ui/src/app/` or in `libs/ui/...` as:
+    - `apps/ui/src/app/events/` (or `libs/ui/events/`)
+    - `apps/ui/src/app/teams/` (or `libs/ui/teams/`)
+- **Each feature directory** should typically include:
+  - `events.module.ts` – Angular feature module
+  - `events-routing.module.ts` – feature routing (if applicable)
+  - `events-page.component.ts` (smart/container component)
+  - Presentational components (e.g., `event-list.component.ts`, `event-card.component.ts`)
+  - `events.service.ts` – data-access or facade for API calls and state orchestration
+- **Keep root `AppModule` and `AppComponent` minimal**:
+  - Configure global routing, layout shell, and top-level providers.
+  - Do **not** place feature-specific components, services, or logic directly under `app/` except routing and layout shell.
+
+---
+
+## Nx Monorepo Guidance
+
+- **Prefer libraries for shared logic**:
+  - Create domain-specific libraries (e.g., `libs/api/events/*`, `libs/ui/events/*`) instead of overloading `apps/*/app`.
+  - Use shared libs for cross-cutting concerns (`shared/ui`, `shared/util`, `shared/data-access`), not for unrelated feature mixes.
+- **Consistency across backend and frontend**:
+  - Mirror feature names across NestJS and Angular where it makes sense (e.g., `events` feature in both API and UI).
+  - Keep DTO/contract types in a shared or clearly named location when they must be reused, rather than scattering them under `app`.
+
+---
+
+## When Adding or Modifying Code
+
+- **Do not**:
+  - Add new controllers, services, or components directly under generic `app` roots (e.g., `apps/api/src/app/app.controller.ts` holding business logic).
+  - Dump miscellaneous functions into `app.module.ts` or `app.component.ts`.
+- **Do**:
+  - Create or extend a feature module directory and place new logic in the appropriate module/controller/service/component file.
+  - Introduce new Nx libs when a feature or concern is shared across multiple apps.

@@ -1,0 +1,17 @@
+---
+description: Always use pnpm as the package manager for this project
+alwaysApply: true
+---
+
+# Package Manager – pnpm Only
+
+- **Use pnpm for all Node package operations** in this repo (installing, adding, removing, updating, running scripts).
+- **Do not use npm or yarn commands** (e.g., `npm install`, `yarn add`) when working on this project.
+- **Prefer lockfile and workspace management from pnpm**:
+  - Run `pnpm install` instead of `npm install` or `yarn install`.
+  - Use `pnpm add <pkg>` / `pnpm add -D <pkg>` to add dependencies.
+  - Use `pnpm remove <pkg>` to remove dependencies.
+- **Scripts and documentation**:
+  - When adding scripts or docs, show `pnpm <script>` (not `npm run <script>`).
+  - When you need an example for installing a new tool, default to pnpm.
+
