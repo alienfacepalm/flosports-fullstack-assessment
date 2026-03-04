@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventStatus, IEventWithStats, EventsRepository } from 'data-access';
-import { EventsService } from './events.service';
+import { EventsService, type IEventsResponse } from './events.service';
 
 const mockEvents: IEventWithStats[] = [
   {
@@ -56,37 +56,39 @@ describe('EventsService', () => {
 
   describe('getEvents', () => {
     it('returns all events when no query', async () => {
-      const result = await service.getEvents({});
+      const result: IEventsResponse = await service.getEvents({});
       expect(repository.getAllEvents).toHaveBeenCalledTimes(1);
-      expect(result).toHaveLength(3);
+      expect(repository.getAllSports).toHaveBeenCalledTimes(1);
+      expect(result.events).toHaveLength(3);
+      expect(result.sports).toEqual(['Cycling', 'Wrestling']);
     });
 
     it('filters by liveOnly true', async () => {
-      const result = await service.getEvents({ liveOnly: true });
-      expect(result).toHaveLength(2);
-      expect(result.every((e) => e.status === EventStatus.Live)).toBe(true);
+      const result: IEventsResponse = await service.getEvents({ liveOnly: true });
+      expect(result.events).toHaveLength(2);
+      expect(result.events.every((e) => e.status === EventStatus.Live)).toBe(true);
     });
 
     it('filters by sport (case-insensitive)', async () => {
-      const result = await service.getEvents({ sport: 'wrestling' });
-      expect(result).toHaveLength(2);
-      expect(result.every((e) => e.sport === 'Wrestling')).toBe(true);
+      const result: IEventsResponse = await service.getEvents({ sport: 'wrestling' });
+      expect(result.events).toHaveLength(2);
+      expect(result.events.every((e) => e.sport === 'Wrestling')).toBe(true);
     });
 
     it('filters by title search', async () => {
-      const result = await service.getEvents({ search: 'Live' });
-      expect(result).toHaveLength(2);
-      expect(result.map((e) => e.title)).toContain('Live Cycling Event');
-      expect(result.map((e) => e.title)).toContain('Another Live Match');
+      const result: IEventsResponse = await service.getEvents({ search: 'Live' });
+      expect(result.events).toHaveLength(2);
+      expect(result.events.map((e) => e.title)).toContain('Live Cycling Event');
+      expect(result.events.map((e) => e.title)).toContain('Another Live Match');
     });
 
     it('combines liveOnly and sport', async () => {
-      const result = await service.getEvents({
+      const result: IEventsResponse = await service.getEvents({
         liveOnly: true,
         sport: 'Wrestling',
       });
-      expect(result).toHaveLength(1);
-      expect(result[0].id).toBe('evt-3');
+      expect(result.events).toHaveLength(1);
+      expect(result.events[0].id).toBe('evt-3');
     });
   });
 

@@ -7,7 +7,7 @@ describe('Events API (e2e)', () => {
     it('returns 200 and an array of events', async () => {
       const res = await axios.get(`${BASE}/events`);
       expect(res.status).toBe(200);
-      expect(Array.isArray(res.data)).toBe(true);
+      expect(Array.isArray(res.data.events)).toBe(true);
     });
 
     it('filters by liveOnly=true (only live events)', async () => {
@@ -15,7 +15,7 @@ describe('Events API (e2e)', () => {
         params: { liveOnly: 'true' },
       });
       expect(res.status).toBe(200);
-      const events = res.data as Array<{ status: string }>;
+      const events = res.data.events as Array<{ status: string }>;
       if (events.length > 0) {
         expect(events.every((e) => e.status === 'live')).toBe(true);
       }
@@ -26,7 +26,7 @@ describe('Events API (e2e)', () => {
         params: { sport: 'Cycling' },
       });
       expect(res.status).toBe(200);
-      const events = res.data as Array<{ sport: string }>;
+      const events = res.data.events as Array<{ sport: string }>;
       if (events.length > 0) {
         expect(events.every((e) => e.sport.toLowerCase() === 'cycling')).toBe(true);
       }
@@ -37,7 +37,7 @@ describe('Events API (e2e)', () => {
         params: { search: 'Track' },
       });
       expect(res.status).toBe(200);
-      const events = res.data as Array<{ title: string }>;
+      const events = res.data.events as Array<{ title: string }>;
       if (events.length > 0) {
         expect(events.every((e) => e.title.toLowerCase().includes('track'))).toBe(true);
       }
@@ -48,14 +48,14 @@ describe('Events API (e2e)', () => {
         params: { liveOnly: 'true', sport: 'Wrestling' },
       });
       expect(res.status).toBe(200);
-      expect(Array.isArray(res.data)).toBe(true);
+      expect(Array.isArray(res.data.events)).toBe(true);
     });
   });
 
   describe('GET /events/:id', () => {
     it('returns 200 and event when id exists', async () => {
       const listRes = await axios.get(`${BASE}/events`);
-      const events = listRes.data as Array<{ id: string }>;
+      const events = (listRes.data as { events: Array<{ id: string }> }).events;
       if (events.length === 0) return;
       const id = events[0].id;
       const res = await axios.get(`${BASE}/events/${id}`);

@@ -29,7 +29,7 @@ This document answers the PRD’s required documentation topics for the FloSport
 
 | Method | Path | Description |
 |--------|------|-------------|
-| `GET` | `/api/events` | List events with optional query filters. Returns merged event + live-stats payloads. |
+| `GET` | `/api/events` | List events with optional query filters. Returns merged event + live-stats payloads **and** the derived sports list in a single response. |
 | `GET` | `/api/events/:id` | Single event by ID. Returns 404 if not found. |
 | `GET` | `/api/sports` | Distinct list of sport names (sorted, case-sensitive as stored). |
 
@@ -46,9 +46,12 @@ All query parameters are optional. Validation is done with `class-validator`; in
 
 ### Response shape
 
-- **Events** (list and by-id): Array or single object with event catalog fields plus optional `liveStats`:
-  - `id`, `title`, `sport`, `league`, `status`, `startTime`, and optionally `liveStats` (`eventId`, `viewerCount`, `peakViewerCount`, `streamHealth`, `lastUpdated`).
-- **Sports**: `string[]`.
+- **Events list** (`GET /api/events`): Object with the merged events and the derived sports list:
+  - `events`: array of event catalog objects with optional `liveStats`:
+    - `id`, `title`, `sport`, `league`, `status`, `startTime`, and optionally `liveStats` (`eventId`, `viewerCount`, `peakViewerCount`, `streamHealth`, `lastUpdated`).
+  - `sports`: `string[]` – distinct, sorted sport names used to power the filter UI.
+- **Event by id** (`GET /api/events/:id`): Single object with the same event fields plus optional `liveStats`.
+- **Sports** (`GET /api/sports`): `string[]` (kept for compatibility and external consumers; the UI uses the unified `/api/events` response).
 
 ### Rate limiting
 
