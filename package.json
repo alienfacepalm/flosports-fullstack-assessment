@@ -4,14 +4,17 @@
   "private": true,
   "packageManager": "pnpm@10.30.3",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
+    "preinstall": "node .scripts/check-node-version.cjs",
+    "postinstall": "node .scripts/patch-angular-vite-overlay.cjs",
+    "check-node": "node .scripts/check-node-version.cjs",
     "nx": "nx",
     "start": "nx run-many -t serve -p api ui --parallel=2",
     "start:api": "nx serve api",
     "start:ui": "nx serve ui",
-    "clean": "bash .scripts/clean.sh",
+    "clean": "node .scripts/clean.cjs",
     "test": "nx run-many -t test --all"
   },
   "devDependencies": {
@@ -28,6 +31,7 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
     "@nx/angular": "^22.5.3",
+    "@nx/jest": "22.5.3",
     "@nx/js": "22.5.3",
     "@nx/nest": "^22.5.3",
     "@nx/node": "22.5.3",
