@@ -1,5 +1,24 @@
 @use '../../variables' as *;
 
+// Event card container and layout
+.event-card {
+  border-radius: $radius-xl;
+  background-color: $color-bg-card;
+  border: 1px solid $color-border;
+  padding: $spacing-3 $spacing-4;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  @media (min-width: $breakpoint-md) {
+    display: grid;
+    // Let the right-hand stats column expand left as space allows.
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: $spacing-4;
+    align-items: flex-start;
+  }
+}
+
 // Event card layout and styling
 .event-card__main {
   display: flex;
@@ -60,6 +79,10 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-1;
+
+  @media (min-width: $breakpoint-md) {
+    justify-self: stretch;
+  }
 }
 
 .event-card__stats-title {

@@ -68,7 +68,7 @@
       } @if (!state.errorMessage() && state.events().length > 0) {
       <ol class="events-list">
         @for (event of state.events(); track event.id) {
-        <li class="event-card">
+        <li>
           <lib-ui-event-card [event]="event"></lib-ui-event-card>
         </li>
         }

@@ -14,8 +14,11 @@ export function formatEventStartTime(iso: string): string {
   const date = new Date(iso);
 
   const width =
-    typeof window !== 'undefined' && typeof window.innerWidth === 'number'
-      ? window.innerWidth
+    typeof window !== 'undefined'
+      ? // Prefer visual viewport width so our breakpoints track what the user actually sees,
+        // especially on high-DPI / zoomed displays.
+        (window.visualViewport?.width ??
+          (typeof window.innerWidth === 'number' ? window.innerWidth : 1024))
       : 1024;
 
   let options: Intl.DateTimeFormatOptions;
