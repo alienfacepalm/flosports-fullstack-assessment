@@ -1,0 +1,19 @@
+---
+description: Tooltip and inline messaging style – no trailing periods
+alwaysApply: true
+---
+
+# Tooltips & Inline Messaging – No Trailing Periods
+
+- **No trailing period** at the end of short tooltips, titles, button labels, and inline helper text.
+  - ✅ `Search events by title`
+  - ✅ `Show only live events`
+  - ❌ `Search events by title.`
+  - ❌ `Show only live events.`
+- **Keep tooltips concise and imperative**:
+  - Prefer short phrases that describe the action or state.
+  - Avoid full sentences unless absolutely necessary.
+- **Match tone across UI**:
+  - Use present tense, neutral/professional voice.
+  - Avoid exclamation marks and casual language in production UI copy.
+

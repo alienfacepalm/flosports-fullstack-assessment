@@ -43,7 +43,7 @@ describe('filter-url.util', () => {
       expect(decodeSearchSegment('-')).toBe('');
     });
 
-    it('encodes and decodes search text', () => {
+    it('encodes and decodes search', () => {
       const search = 'tennis finals';
       expect(decodeSearchSegment(encodeSearchSegment(search))).toBe(search.trim());
     });
