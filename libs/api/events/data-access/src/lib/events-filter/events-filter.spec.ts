@@ -67,6 +67,29 @@ describe('events-filter', () => {
       expect(result.map((e) => e.title)).toContain('Track Showcase - Day 2');
     });
 
+    it('treats "track & field" and "track and field" as equivalent in search', () => {
+      const events: IEventWithStats[] = [
+        baseEvent({
+          id: 'a',
+          title: 'NAIA Outdoor Track & Field Championships',
+          sport: 'Track & Field',
+        }),
+        baseEvent({
+          id: 'b',
+          title: 'Cycling Road Nationals',
+          sport: 'Cycling',
+        }),
+      ];
+
+      const ampersandSearch = filterEvents(events, { search: 'track & field' });
+      const andSearch = filterEvents(events, { search: 'track and field' });
+
+      expect(ampersandSearch).toHaveLength(1);
+      expect(andSearch).toHaveLength(1);
+      expect(ampersandSearch[0].id).toBe('a');
+      expect(andSearch[0].id).toBe('a');
+    });
+
     it('filters by status enum', () => {
       const events: IEventWithStats[] = [
         baseEvent({ id: 'a', status: EventStatus.Live }),

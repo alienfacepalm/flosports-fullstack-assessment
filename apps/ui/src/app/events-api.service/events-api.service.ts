@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IEvent, IEventsFilter } from '../events.types';
+import { IEventsApiResponse, IEventsFilter } from '../events.types';
 import { API_BASE_URL } from '../core/api-base-url.token';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class EventsApiService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = inject(API_BASE_URL);
 
-  getEvents(filter: IEventsFilter): Observable<IEvent[]> {
+  getEvents(filter: IEventsFilter): Observable<IEventsApiResponse> {
     let params = new HttpParams();
 
     if (filter.liveOnly) {
@@ -26,7 +26,7 @@ export class EventsApiService {
       params = params.set('sport', filter.sport);
     }
 
-    return this.http.get<IEvent[]>(`${this.baseUrl}/events`, { params });
+    return this.http.get<IEventsApiResponse>(`${this.baseUrl}/events`, { params });
   }
 
   getSports(): Observable<string[]> {

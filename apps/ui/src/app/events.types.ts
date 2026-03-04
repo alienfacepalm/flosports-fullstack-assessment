@@ -35,3 +35,9 @@ export interface IEventsFilter {
   sport: string | null;
 }
 
+export interface IEventsApiResponse {
+  events: IEvent[];
+  sports: string[];
+}
+
+

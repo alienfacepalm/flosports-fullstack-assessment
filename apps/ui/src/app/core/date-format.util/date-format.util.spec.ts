@@ -1,10 +1,10 @@
 import { formatEventStartTime } from './date-format.util';
 
 describe('formatEventStartTime', () => {
-  it('formats ISO string to locale string with weekday, date, time', () => {
+  it('formats ISO string to locale string with date, time, and timezone', () => {
     const iso = '2025-03-15T18:00:00.000Z';
     const result = formatEventStartTime(iso);
-    expect(result).toMatch(/\w{3}/); // weekday
+    expect(result).toMatch(/\w{3}/); // month
     expect(result).toMatch(/\d/);   // day or time
   });
 

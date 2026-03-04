@@ -7,25 +7,39 @@ import {
 } from '../event-types';
 
 /**
+ * Normalize free-text for smarter matching:
+ * - lowercases
+ * - treats "&" and "and" as equivalent
+ * - collapses repeated whitespace
+ */
+function normalizeSearchText(value: string): string {
+  const lowered = value.toLowerCase();
+  return lowered
+    .replace(/\s*&\s*/g, ' and ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
  * Normalized filter criteria for a single pass over events (avoids repeated lowercasing).
  */
 function normalizeCriteria(criteria: IEventsFilterCriteria): {
   liveOnly: boolean;
   status: EventStatus | undefined;
   sportLower: string | null;
-  searchLower: string | null;
+  searchNormalized: string | null;
 } {
   const sportLower =
     criteria.sport?.trim() != null && criteria.sport.trim() !== ''
       ? criteria.sport.trim().toLowerCase()
       : null;
   const rawSearch = criteria.search?.trim() ?? '';
-  const searchLower = rawSearch !== '' ? rawSearch.toLowerCase() : null;
+  const searchNormalized = rawSearch !== '' ? normalizeSearchText(rawSearch) : null;
   return {
     liveOnly: Boolean(criteria.liveOnly),
     status: criteria.status,
     sportLower,
-    searchLower,
+    searchNormalized,
   };
 }
 
@@ -33,7 +47,7 @@ export function filterEvents(
   events: IEventWithStats[],
   criteria: IEventsFilterCriteria,
 ): IEventWithStats[] {
-  const { liveOnly, status, sportLower, searchLower } = normalizeCriteria(criteria);
+  const { liveOnly, status, sportLower, searchNormalized } = normalizeCriteria(criteria);
 
   return events.filter((event) => {
     if (liveOnly && event.status !== EventStatus.Live) {
@@ -48,8 +62,14 @@ export function filterEvents(
       return false;
     }
 
-    if (searchLower != null && !event.title.toLowerCase().includes(searchLower)) {
-      return false;
+    if (searchNormalized != null) {
+      const titleNormalized = normalizeSearchText(event.title);
+      const sportNormalized = normalizeSearchText(event.sport);
+      const matchesTitle = titleNormalized.includes(searchNormalized);
+      const matchesSport = sportNormalized.includes(searchNormalized);
+      if (!matchesTitle && !matchesSport) {
+        return false;
+      }
     }
 
     return true;

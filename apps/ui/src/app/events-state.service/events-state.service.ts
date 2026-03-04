@@ -8,7 +8,7 @@ import {
 } from 'rxjs';
 import { IUiFilterState } from 'ui-filter-bar';
 import { EventsApiService } from '../events-api.service/events-api.service';
-import { IEvent } from '../events.types';
+import { IEvent, IEventsApiResponse } from '../events.types';
 import { mapErrorToUiMessage } from '../core/error-mapping/error-mapping';
 import { validateAndSanitizeFilter } from '../core/filter-validation/filter-validation';
 
@@ -66,14 +66,16 @@ export class EventsStateService {
   }
 
   /**
-   * Polls /sports as a lightweight health-check every 2 s for up to 60 s.
-   * On first success: seeds the sports list, marks apiReady, and opens the gate for events.
+   * Polls /events as a lightweight health-check every 2 s for up to 60 s.
+   * On first success: seeds the sports list (and initial events), marks apiReady, and opens the gate for events.
    * On timeout: sets apiUnavailable so the template can show a fatal error.
    */
   private waitForApi(): void {
     const maxAttempts = Math.ceil(API_READY_TIMEOUT_MS / API_POLL_INTERVAL_MS);
 
-    this.eventsApi.getSports().pipe(
+    const initialFilter = validateAndSanitizeFilter(this.filters());
+
+    this.eventsApi.getEvents(initialFilter).pipe(
       retry({
         count: maxAttempts,
         delay: (err) => {
@@ -83,18 +85,22 @@ export class EventsStateService {
           return throwError(() => err);
         },
       }),
-      takeUntilDestroyed(this.destroyRef),
       catchError(() => {
         this.apiUnavailable.set(true);
         this.errorMessage.set(
           'Unable to connect to the API server. Please make sure the API is running and try again.',
         );
-        return of([] as string[]);
+        const empty: IEventsApiResponse = { events: [], sports: [] };
+        return of(empty);
       }),
-    ).subscribe((sports) => {
+      takeUntilDestroyed(this.destroyRef),
+    ).subscribe((response) => {
       if (this.apiUnavailable()) return;
       this.apiReady.set(true);
-      queueMicrotask(() => this.sports.set(sports));
+      queueMicrotask(() => {
+        this.sports.set(response.sports);
+        this.events.set(response.events);
+      });
       this.apiReadyGate$.next();
       this.apiReadyGate$.complete();
     });
@@ -130,7 +136,8 @@ export class EventsStateService {
               catchError((err: unknown) => {
                 const ui = mapErrorToUiMessage(err);
                 this.errorMessage.set(ui.message);
-                return of([]);
+                const empty: IEventsApiResponse = { events: [], sports: [] };
+                return of(empty);
               }),
             )
           ),
@@ -138,8 +145,9 @@ export class EventsStateService {
       ),
       takeUntilDestroyed(this.destroyRef),
     ).subscribe({
-      next: (list) => {
-        this.events.set(list);
+      next: (response) => {
+        this.events.set(response.events);
+        this.sports.set(response.sports);
         this.isLoading.set(false);
       },
       error: () => {
