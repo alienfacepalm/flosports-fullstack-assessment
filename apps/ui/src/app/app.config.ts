@@ -4,7 +4,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { httpErrorInterceptor } from './core/http-error.interceptor';
+import { httpErrorInterceptor } from './core/http-error-interceptor/http-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

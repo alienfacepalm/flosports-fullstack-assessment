@@ -1,6 +1,14 @@
 import '@angular/compiler';
-import '@analogjs/vitest-angular/setup-snapshots';
-import { setupTestBed } from '@analogjs/vitest-angular/setup-testbed';
+import { vi } from 'vitest';
 
-setupTestBed();
+vi.mock('@angular/core', async () => {
+  const actual = await import('@angular/core');
+  return {
+    ...actual,
+    // Stub viewChild so that components using the signal-based
+    // viewChild API can be instantiated outside of an Angular
+    // injection context for these unit tests.
+    viewChild: <T>() => () => null as any,
+  };
+});
 

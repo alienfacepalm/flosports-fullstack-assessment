@@ -7,7 +7,7 @@ import {
 
 describe('event-class-maps', () => {
   describe('getStatusClass', () => {
-    it('returns Tailwind classes for known status', () => {
+    it('returns SCSS/BEM classes for known status', () => {
       expect(getStatusClass('upcoming')).toBe(EVENT_STATUS_CLASSES['upcoming']);
       expect(getStatusClass('live')).toBe(EVENT_STATUS_CLASSES['live']);
       expect(getStatusClass('completed')).toBe(EVENT_STATUS_CLASSES['completed']);
@@ -20,7 +20,7 @@ describe('event-class-maps', () => {
   });
 
   describe('getStreamHealthClass', () => {
-    it('returns Tailwind classes for known health', () => {
+    it('returns SCSS/BEM classes for known health', () => {
       expect(getStreamHealthClass('excellent')).toBe(STREAM_HEALTH_CLASSES['excellent']);
       expect(getStreamHealthClass('good')).toBe(STREAM_HEALTH_CLASSES['good']);
       expect(getStreamHealthClass('fair')).toBe(STREAM_HEALTH_CLASSES['fair']);
@@ -37,3 +37,4 @@ describe('event-class-maps', () => {
     });
   });
 });
+

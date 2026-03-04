@@ -14,7 +14,7 @@ This document answers the PRD’s required documentation topics for the FloSport
 - **Nx monorepo**: The app is structured as an Nx workspace with `apps/api` (NestJS) and `apps/ui` (Angular). Shared event types live in the API data-access library and are mirrored on the frontend where needed.
 - **Single page (PRD)**: The PRD asks for “a single page that renders a filter bar … and displays the filtered results below it.” So the UI does **not** require multiple routes; one page is sufficient. An optional event-detail route (e.g. `/events/:id`) is not required by the PRD but is supported by the API.
 - **Deep linking**: The PRD does not require shareable filter URLs. Filter state is synced to the URL query params (`liveOnly`, `search`, `sport`) so that links can be shared and the back/forward buttons restore filter state. On load, URL params take precedence over localStorage.
-- **Styling**: The PRD mentions “Use SCSS for styling”; this repo uses **Tailwind only** (no SCSS/CSS files) per workspace rules.
+- **Styling**: The PRD mentions “Use SCSS for styling”; this repo uses **SCSS only** (no Tailwind or third-party UI libraries). Global tokens in `apps/ui/src/_variables.scss`; component styles in `.scss` files.
 
 ---
 
@@ -123,14 +123,14 @@ So: **thin controller** (parses query, calls service), **service** that delegate
 - **Working E2E flow**: List events, filter by sport/search/live, show live stats where applicable, fetch sports for the filter dropdown.
 - **Clear separation**: Controller → service → repository → file I/O and pure merge/filter; shared types in one place.
 - **Validation**: Query DTOs and global validation pipe so bad params don’t reach the service.
-- **Minimal UI**: Tailwind-only styling, no third-party UI lib; readable list and filters within the timebox.
+- **Minimal UI**: SCSS-only styling, no third-party UI lib; readable list and filters within the timebox.
 
 ### Testing (PRD-critical aspects)
 
 - **Backend unit**: `libs/api/events/data-access` — `events-filter.spec.ts` for `filterEvents` (liveOnly, sport, search, status, combined) and `mergeEventsWithStats`. `apps/api` — `events.service.spec.ts` for `EventsService` with mocked repository (getEvents filtering, getEventById 404, getSports).
 - **Backend e2e**: `apps/api-e2e` — `events.e2e-spec.ts` covers GET /events (no params, liveOnly, sport, search, combined), GET /events/:id (200/404), GET /sports, and rate limiting (normal volume). Run with API serving: `nx run api-e2e:e2e` (or start API then run the e2e project).
 - **Frontend unit**: Filter URL util, filter validation, error mapping, HTTP interceptor, event-class-maps, date-format (existing). Added: `events-api.service.spec.ts` (params for liveOnly/search/sport), `ui-filter-bar.spec.ts` (emit on toggle/search/sport, filteredSports, keyboard), `events-state.service.spec.ts` (signals, setFilters, setFiltersFromState).
-- **How to run**: From repo root, `pnpm exec nx run api:test` runs API + data-access unit tests (Jest). If Nx hits Watchman issues, run Jest from `apps/api`: `npx jest --config jest.config.js --runInBand`. UI unit tests: `pnpm exec nx run ui:test`. E2E: ensure API is running on port 3000, then `pnpm exec nx run api-e2e:e2e`.
+- **How to run**: From repo root: `pnpm test` runs all unit tests; `pnpm exec nx run api:test` for API + data-access (Jest); `pnpm exec nx run ui:test` for UI (Angular/Vitest). E2E: start the API (`pnpm start:api`), then in another terminal run `pnpm exec nx run api-e2e:e2e`. The e2e suite expects the API on port 3000 (see `apps/api-e2e/src/support/global-setup.ts`).
 
 ### Skipped or minimal
 
@@ -154,8 +154,8 @@ So: **thin controller** (parses query, calls service), **service** that delegate
 
 - **Use of AI**: This documentation and parts of the codebase were written or refined with the help of an AI assistant (Cursor).
 - **How it was used**: Exploring the repo structure, reading controllers/services/repository and filter logic, and drafting this README so it matches the code and the PRD’s six documentation requirements. The PRD documentation rule in `.cursor/rules/prd-documentation.mdc` was used to ensure all six sections are covered.
-- **Corrections**: The assistant was guided by project rules (NestJS/Angular structure, Tailwind-only styling, no `any`, kebab-case filenames, PRD doc checklist). No major logic errors were observed; the main focus was aligning wording with the actual code paths (e.g. where merge runs, where filtering runs, exact endpoint paths and query params).
+- **Corrections**: The assistant was guided by project rules (NestJS/Angular structure, SCSS-only styling, no `any`, kebab-case filenames, PRD doc checklist). No major logic errors were observed; the main focus was aligning wording with the actual code paths (e.g. where merge runs, where filtering runs, exact endpoint paths and query params).
 
 ---
 
-For the high-level repo overview and run instructions, see the root [README.md](../README.md). For the PRD summary and checklist, see [PRD.md](./PRD.md).
+For the high-level repo overview, run instructions, and test commands, see the root [README.md](../README.md). For the PRD documentation checklist, see `.cursor/rules/prd-documentation.mdc`.

@@ -5,9 +5,9 @@ import {
   HttpHandlerFn,
   HttpEvent,
 } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { catchError, retry, tap, throwError, timer } from 'rxjs';
-import { mapErrorToUiMessage } from './error-mapping';
+import { mapErrorToUiMessage } from '../error-mapping/error-mapping';
 
 const MAX_RETRIES = 2;
 const RETRY_DELAY_MS = 500;
@@ -17,12 +17,13 @@ function isRetryable(status: number): boolean {
 }
 
 /**
- * Global HTTP interceptor: logs requests, maps errors to UI messages, and optionally retries on 5xx.
+ * Global HTTP interceptor: logs requests, retries on transient errors (5xx / connection), maps errors to UI messages.
+ * Startup-level retry (waiting for the API to boot) is handled by EventsStateService, not here.
  */
 export const httpErrorInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
-): import('rxjs').Observable<HttpEvent<unknown>> => {
+): Observable<HttpEvent<unknown>> => {
   const started = Date.now();
 
   return next(req).pipe(
@@ -35,10 +36,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (
     }),
     retry({
       count: MAX_RETRIES,
-      delay: (err, count) => {
-        if (count > MAX_RETRIES) {
-          return throwError(() => err);
-        }
+      delay: (err) => {
         if (err instanceof HttpErrorResponse && isRetryable(err.status)) {
           return timer(RETRY_DELAY_MS);
         }
@@ -54,3 +52,4 @@ export const httpErrorInterceptor: HttpInterceptorFn = (
     })
   );
 };
+

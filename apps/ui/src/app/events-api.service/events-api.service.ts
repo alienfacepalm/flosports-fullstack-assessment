@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IEvent, IEventsFilter } from './events.types';
-import { API_BASE_URL } from './core/api-base-url.token';
+import { IEvent, IEventsFilter } from '../events.types';
+import { API_BASE_URL } from '../core/api-base-url.token';
 
 @Injectable({
   providedIn: 'root',

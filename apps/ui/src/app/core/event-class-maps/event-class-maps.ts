@@ -25,3 +25,4 @@ export function getStreamHealthClass(health: string | undefined): string {
   }
   return STREAM_HEALTH_CLASSES[health] ?? '';
 }
+

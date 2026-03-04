@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { EventsStateService } from './events-state.service';
+import { EventsStateService } from './events-state.service/events-state.service';
 
 @Component({
   selector: 'app-root',

@@ -8,7 +8,7 @@ import {
   type IEventCatalog,
   type IEventWithStats,
   type ILiveStats,
-} from './event-types';
+} from '../event-types';
 
 describe('events-filter', () => {
   const baseEvent = (
@@ -114,6 +114,15 @@ describe('events-filter', () => {
       const result = filterEvents(events, { search: 'Wrestling' });
       expect(result).toHaveLength(0);
     });
+
+    it('treats whitespace-only search as no search (returns all)', () => {
+      const events: IEventWithStats[] = [
+        baseEvent({ id: 'a', title: 'Event A' }),
+        baseEvent({ id: 'b', title: 'Event B' }),
+      ];
+      expect(filterEvents(events, { search: '   ' })).toHaveLength(2);
+      expect(filterEvents(events, { search: '' })).toHaveLength(2);
+    });
   });
 
   describe('mergeEventsWithStats', () => {
@@ -167,3 +176,4 @@ describe('events-filter', () => {
     });
   });
 });
+

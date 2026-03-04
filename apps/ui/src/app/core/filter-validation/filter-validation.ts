@@ -1,5 +1,5 @@
 import { IUiFilterState } from 'ui-filter-bar';
-import { IEventsFilter } from '../events.types';
+import { IEventsFilter } from '../../events.types';
 
 const MAX_SEARCH_LENGTH = 200;
 
@@ -30,3 +30,4 @@ export function validateAndSanitizeFilter(state: IUiFilterState): IEventsFilter 
       : null,
   };
 }
+

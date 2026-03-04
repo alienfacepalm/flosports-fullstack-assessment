@@ -43,3 +43,4 @@ export function mapErrorToUiMessage(error: unknown): IUiErrorMessage {
 
   return { message: 'An unexpected error occurred.', retryable: true };
 }
+
