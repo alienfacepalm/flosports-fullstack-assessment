@@ -1,8 +1,20 @@
 /**
+ * Capture viewport width once at module load so Angular's
+ * dev-mode double change detection doesn't see values flip
+ * within a single check cycle.
+ */
+const INITIAL_VIEWPORT_WIDTH =
+  typeof window !== 'undefined'
+    ? window.visualViewport?.width ??
+      (typeof window.innerWidth === 'number' ? window.innerWidth : 1024)
+    : 1024;
+
+/**
  * Formats an ISO date string for event display.
  *
- * The output adjusts based on viewport width so we can
- * show as much detail as the UI reasonably allows on each breakpoint.
+ * The output adjusts based on the initial viewport width so we can
+ * show as much detail as the UI reasonably allows on each breakpoint
+ * without triggering ExpressionChanged errors.
  *
  * Examples (US locale, Pacific time):
  * - Extra-wide (≥ 1280px):     "Wednesday, Feb 21, 2026, 4:15 AM PST"
@@ -13,13 +25,7 @@
 export function formatEventStartTime(iso: string): string {
   const date = new Date(iso);
 
-  const width =
-    typeof window !== 'undefined'
-      ? // Prefer visual viewport width so our breakpoints track what the user actually sees,
-        // especially on high-DPI / zoomed displays.
-        (window.visualViewport?.width ??
-          (typeof window.innerWidth === 'number' ? window.innerWidth : 1024))
-      : 1024;
+  const width = INITIAL_VIEWPORT_WIDTH;
 
   let options: Intl.DateTimeFormatOptions;
 
