@@ -147,6 +147,7 @@ So: **thin controller** (parses query, calls service), **service** that delegate
 - Expose `status` in the UI filter bar and pass it through to the API.
 - **Deep linking**: Implemented — filter state is reflected in URL query params so links are shareable; back/forward syncs filters.
 - Stricter error handling and logging (e.g. structured logs, distinct 404/500 where appropriate).
+- **Local caching & optimistic UI**: Add a client-side caching layer (e.g. IndexedDB/localStorage plus an in-memory signal store) so event lists can be served from local cache first, with optimistic updates for user actions and a background revalidation step that syncs with the API. This could be extended into a PWA with a service worker for offline caching and background sync.
 
 ---
 
