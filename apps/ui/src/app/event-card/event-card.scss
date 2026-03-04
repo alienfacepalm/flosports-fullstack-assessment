@@ -1,0 +1,144 @@
+@use '../../variables' as *;
+
+// Event card layout and styling
+.event-card__main {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+}
+
+.event-card__title {
+  font-size: $font-size-base;
+  font-weight: 500;
+  margin: 0;
+}
+
+.event-card__live-badge {
+  margin-left: $spacing-1;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: $color-status-live-badge-bg;
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-badge;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $color-status-live-badge-text;
+}
+
+.event-card__live-dot {
+  margin-right: $spacing-1;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: $color-status-live-dot;
+}
+
+.event-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 $spacing-3;
+  row-gap: $spacing-1;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+}
+
+.event-card__start {
+  font-size: $font-size-xs;
+  color: $color-text-accent;
+  margin: 0;
+}
+
+.event-card__aside {
+  border-radius: $radius-lg;
+  background-color: $color-bg-card-alt;
+  border: 1px solid $color-border-strong;
+  padding: $spacing-2 $spacing-3;
+  font-size: $font-size-xs;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+}
+
+.event-card__stats-title {
+  font-weight: 500;
+  margin: 0 0 $spacing-1;
+}
+
+.event-card__stats-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-card__stats-label {
+  color: $color-text-muted;
+}
+
+.event-card__stats-value {
+  font-variant-numeric: tabular-nums;
+}
+
+// Status pill (upcoming / live / completed) – class names from event-class-maps
+.event-status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-badge;
+  font-weight: 500;
+  line-height: 1; // avoid increasing row height in meta line
+  vertical-align: middle;
+}
+
+.event-status--upcoming {
+  background-color: $color-status-upcoming-bg;
+  color: $color-status-upcoming-text;
+}
+
+.event-status--live {
+  background-color: $color-status-live-bg;
+  color: $color-status-live-text;
+}
+
+.event-status--completed {
+  background-color: $color-status-completed-bg;
+  color: $color-status-completed-text;
+}
+
+// Stream health display – icon + tooltip text
+.stream-health {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+}
+
+.stream-health__icon {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.24);
+}
+
+.stream-health__label {
+  white-space: nowrap;
+}
+
+.stream-health--excellent {
+  color: $color-stream-excellent;
+}
+
+.stream-health--good {
+  color: $color-stream-good;
+}
+
+.stream-health--fair {
+  color: $color-stream-fair;
+}
+
+.stream-health--poor {
+  color: $color-stream-poor;
+}
+

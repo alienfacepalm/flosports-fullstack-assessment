@@ -7,14 +7,15 @@ This document answers the PRD’s required documentation topics for the FloSport
 ## 1. Assumptions made 🤔
 
 - **Data location**: The two JSON data sources live at `apps/api/src/data/events.json` and `apps/api/src/data/live-stats.json`. Paths are resolved from `process.cwd()` at runtime, so the API must be run from the monorepo root.
-- **Merge semantics**: Live stats are attached only when the event’s `status` is `live`. For non-live events, `liveStats` is left `undefined` even if `live-stats.json` contains a row for that event.
+- **Demo stats variety**: `live-stats.json` intentionally includes rows for multiple events with different `streamHealth` levels (`excellent`, `good`, `fair`, `poor`) so the UI can demonstrate green/yellow/red states.
+- **Merge semantics**: Live stats are attached only when the event’s `status` is `live`. For non-live events, `liveStats` is left `undefined` even if `live-stats.json` contains a row for that event; this keeps the catalog semantics simple while still allowing richer demo data.
 - **Filter semantics**: Sport and title search are case-insensitive. The API supports an optional `status` enum filter and a `liveOnly` boolean in addition to `sport` and `search`.
 - **No auth**: The API and UI are unauthenticated; no API keys or user sessions.
 - **Single deployment**: The UI is built to talk to a configurable API base URL (e.g. `http://localhost:3000/api` in development). No assumption of a specific production URL.
 - **Nx monorepo**: The app is structured as an Nx workspace with `apps/api` (NestJS) and `apps/ui` (Angular). Shared event types live in the API data-access library and are mirrored on the frontend where needed.
 - **Single page (PRD)**: The PRD asks for “a single page that renders a filter bar … and displays the filtered results below it.” So the UI does **not** require multiple routes; one page is sufficient. An optional event-detail route (e.g. `/events/:id`) is not required by the PRD but is supported by the API.
 - **Deep linking**: The PRD does not require shareable filter URLs. Filter state is synced to the URL query params (`liveOnly`, `search`, `sport`) so that links can be shared and the back/forward buttons restore filter state. On load, URL params take precedence over localStorage.
-- **Styling**: The PRD mentions “Use SCSS for styling”; this repo uses **SCSS only** (no Tailwind or third-party UI libraries). Global tokens in `apps/ui/src/_variables.scss`; component styles in `.scss` files.
+- **Styling & indicators**: The PRD mentions “Use SCSS for styling”; this repo uses **SCSS only** (no Tailwind or third-party UI libraries). Global tokens in `apps/ui/src/_variables.scss`; component styles in `.scss` files. Stream health is rendered as a small colored dot in the “Live stats” panel with a tooltip and screen-reader label, so different health levels are visible but the card layout stays compact.
 
 ---
 

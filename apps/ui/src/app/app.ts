@@ -11,10 +11,13 @@ import {
   segmentsToFilterState,
   deslugifySport,
 } from './core/filter-url.util/filter-url.util';
+import { EventCardComponent } from './event-card/event-card';
+import { BootScreenCardComponent } from './boot-screen-card/boot-screen-card';
+import { SkeletonCardComponent } from './skeleton-card/skeleton-card';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, UiFilterBar],
+  imports: [CommonModule, UiFilterBar, EventCardComponent, BootScreenCardComponent, SkeletonCardComponent],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',

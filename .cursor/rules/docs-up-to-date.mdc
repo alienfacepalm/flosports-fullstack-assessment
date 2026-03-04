@@ -1,0 +1,28 @@
+---
+description: Keep documentation in sync with behavior, data, and UI
+alwaysApply: true
+---
+
+# Documentation must track changes
+
+Whenever you change behavior, data, or architecture, **assume some docs need updating**:
+
+- **Backend/API changes**: If you touch controllers, services, DTOs, filters, or `apps/api/src/data/*.json`, check `doc/README.md` and the root `README.md` for references to:
+  - Endpoints and query params
+  - Data file locations and merge semantics
+  - Rate limiting and error behavior
+- **Frontend/UI changes**: If you change visible UI behavior (filters, cards, indicators, tooltips, error states) or create new reusable components, update the documentation section that describes the UI/UX so screenshots and descriptions stay accurate.
+- **Demo data changes**: When you add or significantly alter seed/demo data in `apps/api/src/data`, briefly document:
+  - What scenarios the data is meant to showcase (e.g. different stream health levels)
+  - Any important edge cases that tests or reviewers should notice
+
+## Checklist after each feature/change
+
+After implementing a change:
+
+1. Ask: **“Does this affect how someone would use, test, or reason about the system?”**
+2. If yes, update:
+   - Root `README.md` (commands, entry points, high-level overview), and/or
+   - `doc/README.md` (detailed PRD-style documentation)
+3. Ensure the docs **match the current code and data**, not historical behavior.
+

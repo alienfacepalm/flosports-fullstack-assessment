@@ -203,7 +203,7 @@ $fb-control-height: 2.5rem;
   border-radius: 9999px;
   border: 1px solid rgba(148, 163, 184, 0.8); // high-contrast ring
   background-color: transparent; // let the card background show through
-  color: #f9fafb; // pure white icon for maximum contrast
+  color: $fb-text; // match primary control text color (e.g., "Select an option")
   cursor: pointer;
   transition:
     color $fb-transition,
