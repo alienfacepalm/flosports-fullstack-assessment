@@ -2,12 +2,13 @@
 @use 'sass:color';
 
 // Tokens tuned to match dark FloSports palette (see apps/ui/src/_variables.scss)
-$fb-bg: rgba(255, 255, 255, 0.08); // card background
+// Slightly darker than event cards so the controls feel distinct.
+$fb-bg: rgba(255, 255, 255, 0.06); // filter-bar background
 $fb-border: rgba(255, 255, 255, 0.18);
-$fb-placeholder: #6b7280;
+$fb-placeholder: #9ca3af;
 $fb-focus: #ff140f;
 $fb-track-off: rgba(255, 255, 255, 0.2);
-$fb-thumb-off: #6b7280;
+$fb-thumb-off: #9ca3af;
 $fb-track-on: #ff140f;
 $fb-thumb-on: #ffffff;
 $fb-label-on: #ff140f;
@@ -17,7 +18,7 @@ $fb-text: #f9fafb;
 $fb-label: #d1d5db;
 $fb-input-padding-y: 8px;
 $fb-input-padding-x: 12px;
-$fb-radius: 6px;
+$fb-radius: 1rem;
 $fb-transition: 0.18s ease-out;
 // Shared control height so toggle, inputs, and reset feel aligned
 $fb-control-height: 2.5rem;
@@ -84,10 +85,14 @@ $fb-control-height: 2.5rem;
   padding: 2px;
   border-radius: 9999px;
   background-color: $fb-track-off;
-  transition: background-color $fb-transition;
+  border: 1px solid $fb-border;
+  transition:
+    background-color $fb-transition,
+    border-color $fb-transition;
 
   .live-toggle--active & {
     background-color: $fb-track-on;
+    border-color: color.adjust($fb-border, $lightness: 5%);
   }
 }
 
@@ -144,7 +149,7 @@ $fb-control-height: 2.5rem;
   &:focus {
     outline: none;
     border-color: $fb-focus;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 0 2px rgba(255, 20, 15, 0.28);
   }
 }
 
@@ -263,7 +268,7 @@ $fb-control-height: 2.5rem;
   &:focus-visible {
     outline: none;
     border-color: $fb-focus;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 0 0 2px rgba(255, 20, 15, 0.28);
   }
 }
 

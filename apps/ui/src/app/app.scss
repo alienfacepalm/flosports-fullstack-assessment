@@ -66,45 +66,53 @@
 .explorer {
   position: relative;
   min-height: 100vh;
-  background: $color-bg-base;
+  // Base background with subtle broadcast-style texture (grid of faint dots/scanlines)
+  background-color: $color-bg-base;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 0, transparent 1px),
+    linear-gradient(125deg, rgba(255, 20, 15, 0.04) 0, transparent 40%, rgba(255, 20, 15, 0.03) 70%, transparent 100%);
+  background-size:
+    20px 20px,
+    100% 100%;
+  background-blend-mode: normal, screen;
   color: $color-text-primary;
   overflow: hidden;
 
-  // Soft, blurred gradient blobs (FloSports red + black) – mesh/blob style
+  // Soft, blurred gradient blobs (FloSports red + black) – make them a bit more pronounced
   &::before,
   &::after {
     content: '';
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.55;
+    filter: blur(75px);
+    opacity: 0.72;
     pointer-events: none;
     z-index: 0;
   }
 
   &::before {
-    width: min(95vw, 700px);
-    height: min(95vw, 700px);
+    width: min(95vw, 820px);
+    height: min(95vw, 820px);
     top: -20%;
     left: -15%;
     background: radial-gradient(
       circle at 30% 30%,
-      $flo-red-soft 0%,
-      rgba(255, 20, 15, 0.15) 40%,
-      transparent 70%
+      rgba(255, 20, 15, 0.64) 0%,
+      rgba(255, 20, 15, 0.28) 40%,
+      transparent 80%
     );
   }
 
   &::after {
-    width: min(85vw, 550px);
-    height: min(85vw, 550px);
+    width: min(85vw, 660px);
+    height: min(85vw, 660px);
     bottom: -25%;
     right: -10%;
     background: radial-gradient(
       circle at 70% 70%,
-      $flo-red-muted 0%,
-      $flo-black-muted 45%,
-      transparent 75%
+      rgba(255, 20, 15, 0.52) 0%,
+      $flo-black-muted 50%,
+      transparent 82%
     );
   }
 }
