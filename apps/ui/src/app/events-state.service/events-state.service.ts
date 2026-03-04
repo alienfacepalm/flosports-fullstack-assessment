@@ -2,10 +2,10 @@ import { inject, Injectable, signal, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { switchMap, of, catchError, tap, debounceTime, distinctUntilChanged, timeout, startWith } from 'rxjs';
 import { IUiFilterState } from 'ui-filter-bar';
-import { EventsApiService } from './events-api.service';
-import { IEvent } from './events.types';
-import { mapErrorToUiMessage, IUiErrorMessage } from './core/error-mapping';
-import { validateAndSanitizeFilter } from './core/filter-validation';
+import { EventsApiService } from '../events-api.service/events-api.service';
+import { IEvent } from '../events.types';
+import { mapErrorToUiMessage, IUiErrorMessage } from '../core/error-mapping/error-mapping';
+import { validateAndSanitizeFilter } from '../core/filter-validation/filter-validation';
 
 const SEARCH_DEBOUNCE_MS = 200;
 const EVENTS_REQUEST_TIMEOUT_MS = 15_000;
@@ -99,3 +99,4 @@ export class EventsStateService {
     });
   }
 }
+

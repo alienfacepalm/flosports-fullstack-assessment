@@ -1,3 +1,4 @@
+import '@angular/compiler';
 import { HttpErrorResponse } from '@angular/common/http';
 import { mapErrorToUiMessage } from './error-mapping';
 
@@ -41,3 +42,4 @@ describe('mapErrorToUiMessage', () => {
     expect(result.retryable).toBe(true);
   });
 });
+

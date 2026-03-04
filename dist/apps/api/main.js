@@ -208,20 +208,35 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.filterEvents = filterEvents;
 exports.mergeEventsWithStats = mergeEventsWithStats;
 const event_types_1 = __webpack_require__(13);
+/**
+ * Normalized filter criteria for a single pass over events (avoids repeated lowercasing).
+ */
+function normalizeCriteria(criteria) {
+    const sportLower = criteria.sport?.trim() != null && criteria.sport.trim() !== ''
+        ? criteria.sport.trim().toLowerCase()
+        : null;
+    const rawSearch = criteria.search?.trim() ?? '';
+    const searchLower = rawSearch !== '' ? rawSearch.toLowerCase() : null;
+    return {
+        liveOnly: Boolean(criteria.liveOnly),
+        status: criteria.status,
+        sportLower,
+        searchLower,
+    };
+}
 function filterEvents(events, criteria) {
+    const { liveOnly, status, sportLower, searchLower } = normalizeCriteria(criteria);
     return events.filter((event) => {
-        if (criteria.liveOnly && event.status !== event_types_1.EventStatus.Live) {
+        if (liveOnly && event.status !== event_types_1.EventStatus.Live) {
             return false;
         }
-        if (criteria.status && event.status !== criteria.status) {
+        if (status != null && event.status !== status) {
             return false;
         }
-        if (criteria.sport &&
-            event.sport.toLowerCase() !== criteria.sport.toLowerCase()) {
+        if (sportLower != null && event.sport.toLowerCase() !== sportLower) {
             return false;
         }
-        if (criteria.search &&
-            !event.title.toLowerCase().includes(criteria.search.toLowerCase())) {
+        if (searchLower != null && !event.title.toLowerCase().includes(searchLower)) {
             return false;
         }
         return true;

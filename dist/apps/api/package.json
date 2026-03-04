@@ -14,7 +14,8 @@
   "packageManager": "pnpm@10.30.3",
   "pnpm": {
     "overrides": {
-      "ora": "5.4.1"
+      "ora": "5.4.1",
+      "vite": "6.3.3"
     }
   },
   "main": "main.js"

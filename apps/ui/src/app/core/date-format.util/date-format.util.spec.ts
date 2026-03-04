@@ -14,3 +14,4 @@ describe('formatEventStartTime', () => {
     expect(result.length).toBeGreaterThan(0);
   });
 });
+

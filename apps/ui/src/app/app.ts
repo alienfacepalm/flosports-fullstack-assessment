@@ -3,14 +3,14 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { UiFilterBar, IUiFilterState } from 'ui-filter-bar';
-import { EventsStateService } from './events-state.service';
-import { getStatusClass, getStreamHealthClass } from './core/event-class-maps';
-import { formatEventStartTime } from './core/date-format.util';
+import { EventsStateService } from './events-state.service/events-state.service';
+import { getStatusClass, getStreamHealthClass } from './core/event-class-maps/event-class-maps';
+import { formatEventStartTime } from './core/date-format.util/date-format.util';
 import {
   filterStateToSegments,
   segmentsToFilterState,
   deslugifySport,
-} from './core/filter-url.util';
+} from './core/filter-url.util/filter-url.util';
 
 @Component({
   standalone: true,
@@ -39,6 +39,17 @@ export class App implements OnInit {
     this.writeLocationFromFilters(next, false);
   }
 
+  protected onClearFilters(): void {
+    const defaultFilters: IUiFilterState = {
+      liveOnly: false,
+      search: '',
+      sport: null,
+    };
+    this.state.setFiltersFromState(defaultFilters);
+    this.saveFiltersToStorage(defaultFilters);
+    this.writeLocationFromFilters(defaultFilters, true);
+  }
+
   /** Returns stored filter state or null if missing/invalid. */
   private getStoredFilters(): IUiFilterState | null {
     try {
@@ -63,7 +74,7 @@ export class App implements OnInit {
   private applyFiltersFromLocation(): void {
     const [liveSeg, sportSeg, searchSeg] = this.readSegmentsFromLocation();
     const isDefault =
-      liveSeg === 'all' && sportSeg === 'all' && (searchSeg === '-' || searchSeg === '');
+      liveSeg === '-' && sportSeg === '-' && (searchSeg === '-' || searchSeg === '');
 
     if (isDefault) {
       const restored = this.getStoredFilters();
@@ -75,28 +86,23 @@ export class App implements OnInit {
     }
 
     // Sport slug can only be resolved after sports list loads.
-    if (sportSeg !== 'all') {
+    if (sportSeg !== '-') {
       this.pendingSportSegment = sportSeg;
     }
 
-    const { liveOnly, search } = segmentsToFilterState(liveSeg, 'all', searchSeg, []);
+    const { liveOnly, search } = segmentsToFilterState(liveSeg, '-', searchSeg, []);
     this.state.setFiltersFromState({ liveOnly, sport: null, search });
     this.writeLocationSegments([liveSeg, sportSeg, searchSeg], true);
   }
 
   private setupPendingSportResolution(): void {
     this.sports$
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        map((sports) => {
-          if (!this.pendingSportSegment || sports.length === 0) {
-            return null;
-          }
-          return deslugifySport(this.pendingSportSegment, sports);
-        }),
-      )
-      .subscribe((resolved) => {
-        if (!this.pendingSportSegment) return;
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((sports) => {
+        if (!this.pendingSportSegment || sports.length === 0) {
+          return;
+        }
+        const resolved = deslugifySport(this.pendingSportSegment, sports);
         this.pendingSportSegment = null;
         if (resolved) {
           this.state.setFilters({ sport: resolved });
@@ -109,7 +115,7 @@ export class App implements OnInit {
       const [liveSeg, sportSeg, searchSeg] = this.readSegmentsFromLocation();
       const sports = this.state.sports();
       const parsed = segmentsToFilterState(liveSeg, sportSeg, searchSeg, sports);
-      if (!parsed.sport && sportSeg !== 'all') {
+      if (!parsed.sport && sportSeg !== '-') {
         this.pendingSportSegment = sportSeg;
       }
       this.state.setFiltersFromState(parsed);
@@ -122,11 +128,11 @@ export class App implements OnInit {
   private readSegmentsFromLocation(): [string, string, string] {
     const path = window.location.pathname.replace(/^\/+/, '').trim();
     if (!path) {
-      return ['all', 'all', '-'];
+      return ['-', '-', '-'];
     }
     const parts = path.split('/').filter(Boolean);
-    const live = parts[0] ?? 'all';
-    const sport = parts[1] ?? 'all';
+    const live = parts[0] ?? '-';
+    const sport = parts[1] ?? '-';
     const search = parts[2] ?? '-';
     return [live, sport, search];
   }

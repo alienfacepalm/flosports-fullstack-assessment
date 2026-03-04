@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { IEventCatalog, EventStatus, IEventWithStats, ILiveStats } from './event-types';
-import { mergeEventsWithStats } from './events-filter';
+import { mergeEventsWithStats } from './events-filter/events-filter';
 
 @Injectable()
 export class EventsRepository {

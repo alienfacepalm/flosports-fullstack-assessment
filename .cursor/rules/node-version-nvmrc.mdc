@@ -1,0 +1,20 @@
+---
+description: Every shell command must activate the Node.js version from .nvmrc first
+alwaysApply: true
+---
+
+# Node.js Version — Always Activate .nvmrc Before Any Command
+
+- **Every shell command** the agent runs must first ensure the correct Node.js version from `.nvmrc` is active.
+- **Prefix all shell commands** with the nvm activation snippet:
+  ```bash
+  source ~/.nvm/nvm.sh && nvm use && <your command>
+  ```
+- This applies to **all** commands — not just obvious Node/pnpm/nx ones. Includes but is not limited to:
+  - `pnpm install`, `pnpm add`, `pnpm run`
+  - `npx`, `nx`, `ng`
+  - `node`, `tsc`, `vitest`, `jest`
+  - Build, test, lint, serve, and any script execution
+- **Do not** assume the shell already has the right Node version; always activate explicitly.
+- The current `.nvmrc` version is `24.14.0`. Angular 21 requires `require(esm)` support only available in Node 22+.
+- If a command fails with `ERR_REQUIRE_ESM`, the most likely cause is the wrong Node version — re-run with the nvm prefix.

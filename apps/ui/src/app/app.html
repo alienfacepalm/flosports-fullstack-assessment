@@ -1,17 +1,23 @@
 <main class="explorer" role="main">
   <header class="explorer__header">
-    <h1 class="explorer__title">FloSports Event Explorer</h1>
-    <p class="explorer__subtitle">
-      Browse upcoming, live, and completed events across the platform.
-    </p>
+    <div class="explorer__logo-wrap">
+      <img
+        class="explorer__logo"
+        src="/florinterview.png"
+        alt="Flo Interview"
+      />
+    </div>
+    <p class="explorer__subtitle">FloSports Event Explorer</p>
   </header>
 
   <section class="explorer__content">
-    <lib-ui-filter-bar
-      [sports]="state.sports()"
-      [filters]="state.filters()"
-      (filtersChange)="onFiltersChange($event)"
-    ></lib-ui-filter-bar>
+    <div class="explorer__filter-row">
+      <lib-ui-filter-bar
+        [sports]="state.sports()"
+        [filters]="state.filters()"
+        (filtersChange)="onFiltersChange($event)"
+      ></lib-ui-filter-bar>
+    </div>
 
     <section class="events-section" aria-live="polite">
       <header class="events-section__header">
@@ -28,18 +34,18 @@
           @for (row of [1,2,3]; track row) {
             <div class="skeleton-card">
               <div class="skeleton-card__main">
-                <div class="skeleton-card__block" style="height: 1rem; width: 75%;"></div>
+                <div class="skeleton-card__block skeleton-card__block--lead"></div>
                 <div class="skeleton-card__row">
-                  <div class="skeleton-card__block" style="height: 0.75rem; width: 4rem;"></div>
-                  <div class="skeleton-card__block" style="height: 0.75rem; width: 5rem;"></div>
-                  <div class="skeleton-card__block" style="height: 0.75rem; width: 3.5rem;"></div>
+                  <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--w4"></div>
+                  <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--w5"></div>
+                  <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--w3-5"></div>
                 </div>
-                <div class="skeleton-card__block" style="height: 0.75rem; width: 10rem;"></div>
+                <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--w10"></div>
               </div>
               <div class="skeleton-card__aside">
-                <div class="skeleton-card__block" style="height: 0.75rem; width: 5rem;"></div>
-                <div class="skeleton-card__block" style="height: 0.75rem; width: 100%;"></div>
-                <div class="skeleton-card__block" style="height: 0.75rem; width: 100%;"></div>
+                <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--w5"></div>
+                <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--full"></div>
+                <div class="skeleton-card__block skeleton-card__block--meta skeleton-card__block--full"></div>
               </div>
             </div>
           }

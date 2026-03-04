@@ -1,13 +1,13 @@
 /**
  * URL segment format: /:live/:sport/:search
- * - live: "live" | "all"
- * - sport: slug (e.g. "track-and-field") | "all"
+ * - live: "live" | "-" (default: show all)
+ * - sport: slug (e.g. "track-and-field") | "-" (default: all sports)
  * - search: encoded search term, or "-" for none
  */
 
 const LIVE_SEGMENT_ON = 'live';
-const LIVE_SEGMENT_OFF = 'all';
-const SPORT_ALL = 'all';
+const LIVE_SEGMENT_OFF = '-';
+const SPORT_ALL = '-';
 const SEARCH_NONE = '-';
 
 /**
@@ -17,8 +17,8 @@ export function slugifySport(sport: string): string {
   return sport
     .toLowerCase()
     .trim()
+    .replace(/&/g, ' and ')
     .replace(/\s+/g, '-')
-    .replace(/&/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 }
@@ -102,3 +102,4 @@ export function segmentsToFilterState(
   const search = decodeSearchSegment(searchSegment ?? '');
   return { liveOnly, sport, search };
 }
+

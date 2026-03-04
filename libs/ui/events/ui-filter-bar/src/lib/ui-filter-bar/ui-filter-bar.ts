@@ -59,6 +59,14 @@ export class UiFilterBar {
     this.emitUpdatedFilters({ search: '' });
   }
 
+  protected onResetFilters(): void {
+    this.emitUpdatedFilters({
+      liveOnly: false,
+      search: '',
+      sport: null,
+    });
+  }
+
   protected onSearchKeydown(_event: KeyboardEvent): void {
     // Allow default (typing); Escape could clear if desired
   }
@@ -190,7 +198,6 @@ export class UiFilterBar {
       ...this.filters,
       ...partial,
     };
-    this.filters = next;
     this.filtersChange.emit(next);
   }
 }

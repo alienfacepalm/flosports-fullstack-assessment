@@ -12,3 +12,4 @@ export function formatEventStartTime(iso: string): string {
     timeZoneName: 'short',
   });
 }
+

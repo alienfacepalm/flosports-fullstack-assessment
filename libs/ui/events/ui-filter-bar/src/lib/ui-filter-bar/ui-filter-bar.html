@@ -45,7 +45,19 @@
           aria-label="Clear search"
           (click)="onClearSearch()"
         >
-          ×
+          <svg
+            class="filter-bar__clear-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12" />
+            <path d="M18 6l-12 12" />
+          </svg>
         </button>
       }
     </div>
@@ -137,5 +149,29 @@
         </div>
       }
     </div>
+  </div>
+
+  <div class="filter-bar__group filter-bar__group--reset">
+    <span class="filter-bar__label">Reset</span>
+    <button
+      type="button"
+      class="filter-bar__reset"
+      aria-label="Reset all filters"
+      (click)="onResetFilters()"
+    >
+      <svg
+        class="filter-bar__reset-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M3 12a9 9 0 1 0 3-6.708" />
+        <path d="M3 4v4h4" />
+      </svg>
+    </button>
   </div>
 </section>

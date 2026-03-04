@@ -1,0 +1,37 @@
+---
+description: Organize TypeScript source, specs, and related files into per-item directories instead of flat files.
+alwaysApply: true
+---
+
+# File Organization – Per-Item Directories
+
+- **Goal**: Keep related implementation, test, and support files together in their own directory, instead of mixing many `*.ts` / `*.spec.ts` files flat in a single folder.
+
+## Rule
+
+- **When a logical item has multiple files** (for example `foo.util.ts` and `foo.util.spec.ts`, or a component + spec + styles), those files **must live in their own directory named after the item**, not flat alongside other items.
+- The parent folder (e.g. `core/`, `events/`, `teams/`) should contain **one subdirectory per item/feature**, not many sibling `*.ts` + `*.spec.ts` files.
+- This applies across the repo for:
+  - Angular utilities, services, components, and feature pieces.
+  - NestJS modules, controllers, services, and helpers.
+  - Any other TypeScript code where implementation and tests (and optionally styles/templates) belong together.
+
+## Examples
+
+**Do – per-item directory**
+
+- `apps/ui/src/app/core/error-mapping/error-mapping.ts`
+- `apps/ui/src/app/core/error-mapping/error-mapping.spec.ts`
+
+**Don’t – flat mixing of many items**
+
+- `apps/ui/src/app/core/error-mapping.ts`
+- `apps/ui/src/app/core/error-mapping.spec.ts`
+- `apps/ui/src/app/core/filter-validation.ts`
+- `apps/ui/src/app/core/filter-validation.spec.ts`
+
+## Additional Notes
+
+- When an item later gains more files (e.g. `foo.ts` → adds `foo.spec.ts`, `foo.types.ts`), **move it into its own directory at that point**.
+- Keep the directory name aligned with the item/feature name; avoid generic folders like `utils/` inside `core/` that reintroduce flat `*.ts` + `*.spec.ts` clutter.
+

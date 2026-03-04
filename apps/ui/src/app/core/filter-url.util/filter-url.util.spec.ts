@@ -21,8 +21,8 @@ describe('filter-url.util', () => {
   });
 
   describe('deslugifySport', () => {
-    it('returns null for "all" or empty', () => {
-      expect(deslugifySport('all', knownSports)).toBeNull();
+    it('returns null for default segment "-" or empty', () => {
+      expect(deslugifySport('-', knownSports)).toBeNull();
       expect(deslugifySport('', knownSports)).toBeNull();
     });
 
@@ -50,10 +50,10 @@ describe('filter-url.util', () => {
   });
 
   describe('filterStateToSegments', () => {
-    it('produces all/all/- for no filters', () => {
+    it('produces -/-/- for no filters', () => {
       expect(filterStateToSegments(false, null, '', knownSports)).toEqual([
-        'all',
-        'all',
+        '-',
+        '-',
         '-',
       ]);
     });
@@ -72,8 +72,8 @@ describe('filter-url.util', () => {
   });
 
   describe('segmentsToFilterState', () => {
-    it('parses all/all/- as no filters', () => {
-      expect(segmentsToFilterState('all', 'all', '-', knownSports)).toEqual({
+    it('parses -/-/- as no filters', () => {
+      expect(segmentsToFilterState('-', '-', '-', knownSports)).toEqual({
         liveOnly: false,
         sport: null,
         search: '',
@@ -114,3 +114,4 @@ describe('filter-url.util', () => {
     });
   });
 });
+

@@ -55,3 +55,4 @@ describe('validateAndSanitizeFilter', () => {
     }).liveOnly).toBe(true);
   });
 });
+
