@@ -199,6 +199,10 @@ $fb-control-height: 2.5rem;
   align-items: center;
 }
 
+.filter-bar__group--reset .filter-bar__label {
+  cursor: pointer;
+}
+
 .filter-bar__reset {
   display: inline-flex;
   align-items: center;
