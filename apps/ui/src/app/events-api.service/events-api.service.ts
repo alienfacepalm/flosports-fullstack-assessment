@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IEventsApiResponse, IEventsFilter } from '../events.types';
+import { EventStatus, IEventsApiResponse, IEventsFilter } from '../events.types';
 import { API_BASE_URL } from '../core/api-base-url.token';
 
 @Injectable({
@@ -24,6 +24,10 @@ export class EventsApiService {
 
     if (filter.sport) {
       params = params.set('sport', filter.sport);
+    }
+
+    if (filter.status && filter.status !== EventStatus.Live) {
+      params = params.set('status', filter.status);
     }
 
     return this.http.get<IEventsApiResponse>(`${this.baseUrl}/events`, { params });

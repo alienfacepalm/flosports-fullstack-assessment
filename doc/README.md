@@ -141,7 +141,7 @@ So: **thin controller** (parses query, calls service), **service** that delegate
 - **Pagination**: List returns all matching events; no `limit`/`offset` or cursor. Fine for small data; would add for scale.
 - **Deep error handling**: File-not-found and parse errors become a generic 500; no distinct codes or user-facing messages.
 - **Event detail page**: API supports `GET /api/events/:id`; the UI may not have a dedicated detail view yet.
-- **Status in UI filters**: The API supports a `status` filter; the current UI filter set may only expose sport, search, and live-only.
+- **Status in UI filters**: The API supports a `status` filter; the UI now exposes this via a compact segmented control (`All`, `Upcoming`, `Live`, `Completed`) next to the live-only toggle. Selecting a specific status turns off the generic live-only switch so the two do not conflict.
 
 ### With more time (~2 hours)
 

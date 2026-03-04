@@ -41,6 +41,7 @@ export class EventsStateService {
     liveOnly: false,
     search: '',
     sport: null,
+    status: 'all',
   });
 
   readonly events = signal<IEvent[]>([]);
@@ -129,14 +130,21 @@ export class EventsStateService {
     return (
       a.liveOnly === b.liveOnly &&
       a.search === b.search &&
-      a.sport === b.sport
+      a.sport === b.sport &&
+      a.status === b.status
     );
   }
 
   private static isBaseFilter(state: IUiFilterState): boolean {
     const searchTrimmed = state.search.trim();
     const sportTrimmed = state.sport != null ? state.sport.trim() : '';
-    return state.liveOnly === false && searchTrimmed === '' && sportTrimmed === '';
+    const statusIsDefault = state.status === 'all' || state.status == null;
+    return (
+      state.liveOnly === false &&
+      searchTrimmed === '' &&
+      sportTrimmed === '' &&
+      statusIsDefault
+    );
   }
 
   private static normalizeSearchText(value: string): string {
@@ -149,6 +157,7 @@ export class EventsStateService {
 
   private static normalizeCriteria(filter: IEventsFilter): {
     liveOnly: boolean;
+    status: EventStatus | null;
     sportLower: string | null;
     searchNormalized: string | null;
   } {
@@ -162,6 +171,7 @@ export class EventsStateService {
 
     return {
       liveOnly: Boolean(filter.liveOnly),
+      status: filter.status ?? null,
       sportLower,
       searchNormalized,
     };
@@ -173,7 +183,7 @@ export class EventsStateService {
    */
   private applyLocalFilter(events: IEvent[], state: IUiFilterState): IEvent[] {
     const backendFilter = validateAndSanitizeFilter(state);
-    const { liveOnly, sportLower, searchNormalized } =
+    const { liveOnly, status, sportLower, searchNormalized } =
       EventsStateService.normalizeCriteria(backendFilter);
 
     if (!liveOnly && sportLower == null && searchNormalized == null) {
@@ -182,6 +192,10 @@ export class EventsStateService {
 
     return events.filter((event) => {
       if (liveOnly && event.status !== EventStatus.Live) {
+        return false;
+      }
+
+      if (!liveOnly && status != null && event.status !== status) {
         return false;
       }
 

@@ -5,6 +5,11 @@ describe('EventsApiService (URL contract)', () => {
     const segments = filterStateToSegments(true, 'Cycling', 'finals', ['Cycling']);
     expect(segments).toEqual(['live', 'cycling', 'finals']);
   });
+
+  it('does not interfere with status filter semantics', () => {
+    const segments = filterStateToSegments(false, null, 'finals', []);
+    expect(segments).toEqual(['-', '-', 'finals']);
+  });
 });
 
 

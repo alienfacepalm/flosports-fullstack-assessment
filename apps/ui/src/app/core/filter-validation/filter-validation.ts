@@ -1,5 +1,5 @@
 import { IUiFilterState } from 'ui-filter-bar';
-import { IEventsFilter } from '../../events.types';
+import { EventStatus, IEventsFilter } from '../../events.types';
 
 const MAX_SEARCH_LENGTH = 200;
 const MIN_SEARCH_LENGTH = 2;
@@ -24,6 +24,19 @@ function sanitizeSearch(value: string): string {
   return cleaned.slice(0, MAX_SEARCH_LENGTH);
 }
 
+function mapStatus(uiStatus: string | undefined): EventStatus | null {
+  switch (uiStatus) {
+    case 'upcoming':
+      return EventStatus.Upcoming;
+    case 'live':
+      return EventStatus.Live;
+    case 'completed':
+      return EventStatus.Completed;
+    default:
+      return null;
+  }
+}
+
 /**
  * Validates and sanitizes filter state into a backend-ready filter.
  */
@@ -34,6 +47,7 @@ export function validateAndSanitizeFilter(state: IUiFilterState): IEventsFilter 
     sport: state.sport != null && typeof state.sport === 'string' && state.sport.trim() !== ''
       ? state.sport.trim()
       : null,
+    status: mapStatus((state as IUiFilterState & { status?: string }).status),
   };
 }
 

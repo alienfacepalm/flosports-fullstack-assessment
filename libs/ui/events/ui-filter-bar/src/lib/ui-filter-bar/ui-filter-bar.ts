@@ -9,7 +9,11 @@ import {
   viewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IUiFilterState } from './ui-filter-bar.types';
+import {
+  DEFAULT_UI_FILTER_STATE,
+  IUiFilterState,
+  TStatusFilter,
+} from './ui-filter-bar.types';
 
 @Component({
   selector: 'lib-ui-filter-bar',
@@ -20,11 +24,7 @@ import { IUiFilterState } from './ui-filter-bar.types';
 })
 export class UiFilterBar {
   @Input() sports: string[] = [];
-  @Input() filters: IUiFilterState = {
-    liveOnly: false,
-    search: '',
-    sport: null,
-  };
+  @Input() filters: IUiFilterState = { ...DEFAULT_UI_FILTER_STATE };
 
   @Output() filtersChange = new EventEmitter<IUiFilterState>();
 
@@ -37,7 +37,11 @@ export class UiFilterBar {
   private readonly sportSearchInput = viewChild<ElementRef<HTMLInputElement>>('sportSearchInput');
 
   protected onToggleLiveOnly(liveOnly: boolean): void {
-    this.emitUpdatedFilters({ liveOnly });
+    const patch: Partial<IUiFilterState> = { liveOnly };
+    if (liveOnly && this.filters.status !== 'all') {
+      patch.status = 'all';
+    }
+    this.emitUpdatedFilters(patch);
   }
 
   protected onToggleClick(): void {
@@ -60,11 +64,7 @@ export class UiFilterBar {
   }
 
   protected onResetFilters(): void {
-    this.emitUpdatedFilters({
-      liveOnly: false,
-      search: '',
-      sport: null,
-    });
+    this.emitUpdatedFilters({ ...DEFAULT_UI_FILTER_STATE });
   }
 
   protected onSearchKeydown(_event: KeyboardEvent): void {
@@ -199,6 +199,14 @@ export class UiFilterBar {
       ...partial,
     };
     this.filtersChange.emit(next);
+  }
+
+  protected onStatusChange(status: TStatusFilter): void {
+    const patch: Partial<IUiFilterState> = { status };
+    if (status !== 'all' && this.filters.liveOnly) {
+      patch.liveOnly = false;
+    }
+    this.emitUpdatedFilters(patch);
   }
 }
 

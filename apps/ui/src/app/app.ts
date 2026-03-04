@@ -50,6 +50,7 @@ export class App implements OnInit {
       liveOnly: false,
       search: '',
       sport: null,
+      status: 'all',
     };
     this.state.setFiltersFromState(defaultFilters);
     this.saveFiltersToStorage(defaultFilters);
@@ -71,6 +72,12 @@ export class App implements OnInit {
         liveOnly: parsed.liveOnly,
         search: typeof parsed.search === 'string' ? parsed.search : '',
         sport,
+        status:
+          parsed.status === 'upcoming' ||
+          parsed.status === 'live' ||
+          parsed.status === 'completed'
+            ? parsed.status
+            : 'all',
       };
     } catch {
       return null;
@@ -97,7 +104,12 @@ export class App implements OnInit {
     }
 
     const { liveOnly, search } = segmentsToFilterState(liveSeg, '-', searchSeg, []);
-    this.state.setFiltersFromState({ liveOnly, sport: null, search });
+    this.state.setFiltersFromState({
+      liveOnly,
+      sport: null,
+      search,
+      status: 'all',
+    });
     this.writeLocationSegments([liveSeg, sportSeg, searchSeg], true);
   }
 
@@ -124,7 +136,10 @@ export class App implements OnInit {
       if (!parsed.sport && sportSeg !== '-') {
         this.pendingSportSegment = sportSeg;
       }
-      this.state.setFiltersFromState(parsed);
+      this.state.setFiltersFromState({
+        ...parsed,
+        status: this.state.filters().status,
+      });
     };
 
     window.addEventListener('popstate', handler);

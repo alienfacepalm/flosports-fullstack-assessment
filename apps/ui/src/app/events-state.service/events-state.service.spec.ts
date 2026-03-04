@@ -6,11 +6,13 @@ describe('EventsStateService (filter sanitization contract)', () => {
       liveOnly: true,
       search: '  finals ',
       sport: '  Cycling ',
+      status: 'upcoming',
     });
 
     expect(result.liveOnly).toBe(true);
     expect(result.search).toBe('finals');
     expect(result.sport).toBe('Cycling');
+    expect(result.status).toBe('upcoming');
   });
 });
 

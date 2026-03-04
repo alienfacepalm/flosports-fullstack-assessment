@@ -1,6 +1,6 @@
 import '@angular/compiler';
 import { UiFilterBar } from './ui-filter-bar';
-import { IUiFilterState } from './ui-filter-bar.types';
+import { DEFAULT_UI_FILTER_STATE, IUiFilterState } from './ui-filter-bar.types';
 
 type TUiFilterBarTestApi = UiFilterBar & {
   onToggleClick(): void;
@@ -10,6 +10,7 @@ type TUiFilterBarTestApi = UiFilterBar & {
   onResetFilters(): void;
   onToggleKeydown(event: KeyboardEvent): void;
   onOptionKeydown(event: KeyboardEvent, sport: string | null): void;
+  onStatusChange(value: 'all' | 'upcoming' | 'live' | 'completed'): void;
   sportSearch: string;
   isDropdownOpen: boolean;
   focusedOptionIndex: number;
@@ -20,11 +21,7 @@ describe('UiFilterBar', () => {
   let component: UiFilterBar;
   let testApi: TUiFilterBarTestApi;
 
-  const defaultFilters: IUiFilterState = {
-    liveOnly: false,
-    search: '',
-    sport: null,
-  };
+  const defaultFilters: IUiFilterState = { ...DEFAULT_UI_FILTER_STATE };
 
   beforeEach(() => {
     component = new UiFilterBar();
@@ -43,6 +40,7 @@ describe('UiFilterBar', () => {
         expect(next.liveOnly).toBe(true);
         expect(next.search).toBe('');
         expect(next.sport).toBeNull();
+        expect(next.status).toBe('all');
       });
       testApi.onToggleClick();
     });
@@ -50,6 +48,7 @@ describe('UiFilterBar', () => {
     it('emits with updated search when onSearchChange is called', () => {
       component.filtersChange.subscribe((next) => {
         expect(next.search).toBe('tennis');
+        expect(next.status).toBe('all');
       });
       testApi.onSearchChange('tennis');
     });
@@ -58,6 +57,7 @@ describe('UiFilterBar', () => {
       component.filters = { ...defaultFilters, search: 'old' };
       component.filtersChange.subscribe((next) => {
         expect(next.search).toBe('');
+        expect(next.status).toBe('all');
       });
       testApi.onClearSearch();
     });
@@ -65,6 +65,7 @@ describe('UiFilterBar', () => {
     it('emits with selected sport when onSportSelected is called', () => {
       component.filtersChange.subscribe((next) => {
         expect(next.sport).toBe('Cycling');
+        expect(next.status).toBe('all');
       });
       testApi.onSportSelected('Cycling');
     });
@@ -73,16 +74,47 @@ describe('UiFilterBar', () => {
       component.filters = { ...defaultFilters, sport: 'Wrestling' };
       component.filtersChange.subscribe((next) => {
         expect(next.sport).toBeNull();
+        expect(next.status).toBe('all');
       });
       testApi.onSportSelected(null);
     });
 
     it('emits default filters when reset is invoked', () => {
-      component.filters = { liveOnly: true, search: 'abc', sport: 'Cycling' };
+      component.filters = {
+        liveOnly: true,
+        search: 'abc',
+        sport: 'Cycling',
+        status: 'upcoming',
+      };
       component.filtersChange.subscribe((next) => {
         expect(next).toEqual(defaultFilters);
       });
       testApi.onResetFilters();
+    });
+
+    it('resets status to all when turning liveOnly on', () => {
+      component.filters = {
+        ...defaultFilters,
+        status: 'upcoming',
+      };
+      component.filtersChange.subscribe((next) => {
+        expect(next.liveOnly).toBe(true);
+        expect(next.status).toBe('all');
+      });
+      testApi.onToggleClick();
+    });
+
+    it('turns off liveOnly when selecting a non-all status', () => {
+      component.filters = {
+        ...defaultFilters,
+        liveOnly: true,
+        status: 'all',
+      };
+      component.filtersChange.subscribe((next) => {
+        expect(next.status).toBe('completed');
+        expect(next.liveOnly).toBe(false);
+      });
+      (component as TUiFilterBarTestApi).onStatusChange('completed');
     });
   });
 

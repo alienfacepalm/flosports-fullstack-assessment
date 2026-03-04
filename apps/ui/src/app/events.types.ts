@@ -33,6 +33,7 @@ export interface IEventsFilter {
   liveOnly: boolean;
   search: string;
   sport: string | null;
+  status: EventStatus | null;
 }
 
 export interface IEventsApiResponse {
