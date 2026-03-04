@@ -43,15 +43,15 @@ $input-padding-y: 8px;
 $input-padding-x: 12px;
 $input-radius: 6px;
 
-$color-status-upcoming-bg: #dbeafe;
-$color-status-upcoming-text: #1e40af;
-$color-status-live-bg: #fce7f3;
-$color-status-live-text: #be185d;
-$color-status-live-badge-bg: #dc2626;
-$color-status-live-badge-text: #ffffff;
-$color-status-live-dot: #ef4444;
-$color-status-completed-bg: #f3f4f6;
-$color-status-completed-text: #374151;
+$color-status-upcoming-bg: rgba(59, 130, 246, 0.18);
+$color-status-upcoming-text: #bfdbfe;
+$color-status-live-bg: $flo-red-muted;
+$color-status-live-text: $color-text-primary;
+$color-status-live-badge-bg: $flo-red-soft;
+$color-status-live-badge-text: $color-text-primary;
+$color-status-live-dot: $flo-red;
+$color-status-completed-bg: rgba(156, 163, 175, 0.24);
+$color-status-completed-text: #e5e7eb;
 
 $color-stream-excellent: #34d399;
 $color-stream-good: #6ee7b7;

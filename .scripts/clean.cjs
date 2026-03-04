@@ -33,4 +33,4 @@ try {
   // ignore
 }
 
-console.log('Clean completed. You can now run your apps (e.g. pnpm start:ui).');
+console.log('Clean completed. You can now run your apps (e.g. pnpm start).');

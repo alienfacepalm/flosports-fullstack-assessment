@@ -12,5 +12,20 @@
     "peakViewerCount": 4955,
     "streamHealth": "good",
     "lastUpdated": "2026-02-17T23:07:47.146Z"
+  },
+  {
+    "eventId": "evt-0001",
+    "viewerCount": 2987,
+    "peakViewerCount": 4310,
+    "streamHealth": "fair",
+    "lastUpdated": "2026-02-21T11:55:00.000Z"
+  },
+  {
+    "eventId": "evt-0004",
+    "viewerCount": 9821,
+    "peakViewerCount": 15234,
+    "streamHealth": "poor",
+    "lastUpdated": "2026-02-10T17:05:30.000Z"
   }
 ]
+

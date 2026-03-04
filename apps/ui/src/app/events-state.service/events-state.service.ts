@@ -2,13 +2,25 @@ import { inject, Injectable, signal, DestroyRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
-  Subject, switchMap, of, catchError, tap, debounceTime,
-  distinctUntilChanged, timeout, startWith,
-  retry, throwError, timer, filter, take,
+  Subject,
+  switchMap,
+  of,
+  catchError,
+  tap,
+  debounceTime,
+  distinctUntilChanged,
+  timeout,
+  startWith,
+  retry,
+  throwError,
+  timer,
+  filter,
+  take,
+  map,
 } from 'rxjs';
 import { IUiFilterState } from 'ui-filter-bar';
 import { EventsApiService } from '../events-api.service/events-api.service';
-import { IEvent, IEventsApiResponse } from '../events.types';
+import { EventStatus, IEvent, IEventsApiResponse, IEventsFilter } from '../events.types';
 import { mapErrorToUiMessage } from '../core/error-mapping/error-mapping';
 import { validateAndSanitizeFilter } from '../core/filter-validation/filter-validation';
 
@@ -35,6 +47,12 @@ export class EventsStateService {
   readonly sports = signal<string[]>([]);
   readonly isLoading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+
+  /**
+   * Cached full events list used for optimistic client-side filtering.
+   * Represents the latest `/events` response for the base (unfiltered) state.
+   */
+  readonly allEvents = signal<IEvent[]>([]);
 
   /** True once the API has responded successfully at least once. */
   readonly apiReady = signal(false);
@@ -100,6 +118,7 @@ export class EventsStateService {
       queueMicrotask(() => {
         this.sports.set(response.sports);
         this.events.set(response.events);
+        this.allEvents.set(response.events);
       });
       this.apiReadyGate$.next();
       this.apiReadyGate$.complete();
@@ -114,6 +133,76 @@ export class EventsStateService {
     );
   }
 
+  private static isBaseFilter(state: IUiFilterState): boolean {
+    const searchTrimmed = state.search.trim();
+    const sportTrimmed = state.sport != null ? state.sport.trim() : '';
+    return state.liveOnly === false && searchTrimmed === '' && sportTrimmed === '';
+  }
+
+  private static normalizeSearchText(value: string): string {
+    const lowered = value.toLowerCase();
+    return lowered
+      .replace(/\s*&\s*/g, ' and ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  private static normalizeCriteria(filter: IEventsFilter): {
+    liveOnly: boolean;
+    sportLower: string | null;
+    searchNormalized: string | null;
+  } {
+    const sportLower =
+      filter.sport != null && filter.sport.trim() !== ''
+        ? filter.sport.trim().toLowerCase()
+        : null;
+    const rawSearch = filter.search.trim();
+    const searchNormalized =
+      rawSearch !== '' ? EventsStateService.normalizeSearchText(rawSearch) : null;
+
+    return {
+      liveOnly: Boolean(filter.liveOnly),
+      sportLower,
+      searchNormalized,
+    };
+  }
+
+  /**
+   * Applies the same filter semantics as the backend `filterEvents` helper,
+   * but against the locally cached full list so we can update the UI optimistically.
+   */
+  private applyLocalFilter(events: IEvent[], state: IUiFilterState): IEvent[] {
+    const backendFilter = validateAndSanitizeFilter(state);
+    const { liveOnly, sportLower, searchNormalized } =
+      EventsStateService.normalizeCriteria(backendFilter);
+
+    if (!liveOnly && sportLower == null && searchNormalized == null) {
+      return events;
+    }
+
+    return events.filter((event) => {
+      if (liveOnly && event.status !== EventStatus.Live) {
+        return false;
+      }
+
+      if (sportLower != null && event.sport.toLowerCase() !== sportLower) {
+        return false;
+      }
+
+      if (searchNormalized != null) {
+        const titleNormalized = EventsStateService.normalizeSearchText(event.title);
+        const sportNormalized = EventsStateService.normalizeSearchText(event.sport);
+        const matchesTitle = titleNormalized.includes(searchNormalized);
+        const matchesSport = sportNormalized.includes(searchNormalized);
+        if (!matchesTitle && !matchesSport) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }
+
   /**
    * Waits for the API-ready gate, then subscribes to filter changes and fetches events.
    * The filters$ observable is created in injection context (field initializer) so toObservable works.
@@ -125,27 +214,41 @@ export class EventsStateService {
         this.filters$.pipe(
           startWith(this.filters()),
           distinctUntilChanged(EventsStateService.filterStateEqual),
-          tap(() => {
-            this.isLoading.set(true);
+          tap((state) => {
             this.errorMessage.set(null);
+            const cached = this.allEvents();
+            if (cached.length === 0) {
+              this.isLoading.set(true);
+            } else {
+              const optimistic = this.applyLocalFilter(cached, state);
+              this.events.set(optimistic);
+              this.isLoading.set(false);
+            }
           }),
           debounceTime(SEARCH_DEBOUNCE_MS),
           switchMap((state) =>
             this.eventsApi.getEvents(validateAndSanitizeFilter(state)).pipe(
               timeout(EVENTS_REQUEST_TIMEOUT_MS),
+              map((response) => ({ response, state })),
               catchError((err: unknown) => {
                 const ui = mapErrorToUiMessage(err);
                 this.errorMessage.set(ui.message);
-                const empty: IEventsApiResponse = { events: [], sports: [] };
-                return of(empty);
+                const fallback: IEventsApiResponse = {
+                  events: this.events(),
+                  sports: this.sports(),
+                };
+                return of({ response: fallback, state });
               }),
-            )
+            ),
           ),
         )
       ),
       takeUntilDestroyed(this.destroyRef),
     ).subscribe({
-      next: (response) => {
+      next: ({ response, state }) => {
+        if (EventsStateService.isBaseFilter(state)) {
+          this.allEvents.set(response.events);
+        }
         this.events.set(response.events);
         this.sports.set(response.sports);
         this.isLoading.set(false);

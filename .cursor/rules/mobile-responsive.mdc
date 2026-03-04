@@ -1,0 +1,37 @@
+---
+description: Mobile-responsive behavior and date formatting for FloSports Event Explorer UI
+alwaysApply: true
+---
+
+# Mobile-Responsive UI Rules
+
+- **Breakpoints (approximate)**:
+  - Extra-wide desktop: `width >= 1280px`
+  - Desktop: `768px <= width < 1280px`
+  - Tablet-ish: `480px <= width < 768px`
+  - Small phones: `width < 480px`
+
+- **Event card timestamp formatting**:
+  - Extra-wide (>= 1280px): show **full weekday + full date + time + timezone**:
+    - `Starts: Wednesday, Feb 21, 2026, 4:15 AM PST`
+  - Desktop (>= 768px and < 1280px): show **short weekday + full date + time + timezone**:
+    - `Starts: Wed, Feb 21, 2026, 4:15 AM PST`
+  - Tablet-ish (>= 480px and < 768px): show **full date + time** (no explicit timezone):
+    - `Starts: Feb 21, 2026, 4:15 AM`
+  - Small phones (< 480px): show **short date + time** (no year, no explicit timezone):
+    - `Starts: Feb 21, 4:15 AM`
+  - Use a single centralized formatter (`formatEventStartTime`) so all event cards stay consistent.
+
+- **Responsive priority**:
+  - On **larger screens**, prefer **showing more detail** (weekday, year, timezone) as long as it fits the layout.
+  - On **smaller screens**, prefer **legibility and density**: drop lowest-priority pieces in this order:
+    1. Timezone label
+    2. Year
+    3. Weekday prefix
+
+- **Future responsive changes**:
+  - If you adjust breakpoints or what is shown at each size, update:
+    - The date-formatting utility in the UI (`formatEventStartTime`),
+    - The corresponding unit tests,
+    - And this rule file to keep expectations in sync. 
+
