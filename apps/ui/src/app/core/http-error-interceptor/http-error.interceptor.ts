@@ -17,7 +17,8 @@ function isRetryable(status: number): boolean {
 }
 
 /**
- * Global HTTP interceptor: logs requests, maps errors to UI messages, and optionally retries on 5xx.
+ * Global HTTP interceptor: logs requests, retries on transient errors (5xx / connection), maps errors to UI messages.
+ * Startup-level retry (waiting for the API to boot) is handled by EventsStateService, not here.
  */
 export const httpErrorInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
